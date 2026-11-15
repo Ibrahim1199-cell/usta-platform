@@ -1,8 +1,8 @@
 package com.usta.backend;
 
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 
 import javax.sql.DataSource;
@@ -16,11 +16,12 @@ public class BackendApplication {
 
 	@Bean
 	public DataSource getDataSource() {
-		return DataSourceBuilder.create()
-				.driverClassName("org.postgresql.Driver")
-				.url("jdbc:postgresql://aws-1-eu-west-1.pooler.supabase.com:6543/postgres?prepareThreshold=0&sslmode=require")
-				.username("postgres.jbtazoqcjvrcnnedgxne")
-				.password("ibrahimsupabase20082026")
-				.build();
+		HikariDataSource ds = new HikariDataSource();
+		ds.setDriverClassName("org.postgresql.Driver");
+		ds.setJdbcUrl("jdbc:postgresql://aws-1-eu-west-1.pooler.supabase.com:5432/postgres");
+		ds.setUsername("postgres.jbtazoqcjvrcnnedgxne");
+		ds.setPassword("ibrahimsupabase20082026");
+		ds.setMaximumPoolSize(3);
+		return ds;
 	}
 }

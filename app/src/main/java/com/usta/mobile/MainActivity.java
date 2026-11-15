@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.usta.mobile.api.RetrofitClient;
 import com.usta.mobile.model.User;
+import com.usta.mobile.util.SessionManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +34,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SessionManager sessionManager = new SessionManager(this);
+        User savedUser = sessionManager.getUser();
+        if (savedUser != null) {
+            Intent intent = "USTA".equalsIgnoreCase(savedUser.getRole())
+                    ? new Intent(this, MasterHomeActivity.class)
+                    : new Intent(this, CustomerHomeActivity.class);
+            intent.putExtra("user", savedUser);
+            startActivity(intent);
+            finish();
+            return;
+        }
         etPhone = findViewById(R.id.etLoginPhone);
         etPassword = findViewById(R.id.etLoginPassword);
         btnLogin = findViewById(R.id.btnLogin);
@@ -71,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     User loggedUser = response.body();
                     Toast.makeText(MainActivity.this, "Xoş gəldiniz, " + loggedUser.getFullName(), Toast.LENGTH_SHORT).show();
+                    new SessionManager(MainActivity.this).saveUser(loggedUser);
 
                     // Roluna görə uyğun ana ekrana yönləndiririk (növbəti addımda yaradacağıq)
                     if ("USTA".equalsIgnoreCase(loggedUser.getRole())) {

@@ -41,4 +41,15 @@ public class User implements Serializable {
 
     public String getAbout() { return about; }
     public void setAbout(String about) { this.about = about; }
+
+    private Double rating;
+    private Integer ratingCount;
+
+    public Double getRating() { return rating != null ? rating : 0.0; }
+    public void setRating(Double rating) { this.rating = rating; }
+
+    public Integer getRatingCount() { return ratingCount != null ? ratingCount : 0; }
+    public void setRatingCount(Integer ratingCount) { this.ratingCount = ratingCount; }
+
+    
 }

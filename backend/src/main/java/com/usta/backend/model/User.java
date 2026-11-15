@@ -26,14 +26,19 @@ public class User {
     // Yalnız USTA olanlar üçün doldurulacaq hissələr:
     private String category;      // Peşəsi (məs: Santexnik, Elektrik, Kombi ustası)
     private Integer experience;   // Təcrübə ili (məs: 5)
+
+    @Column(columnDefinition = "TEXT")
     private String about;         // Usta haqqında qısa məlumat
 
+    // Reytinq sahələri:
     private Double rating = 0.0;
     private Integer ratingCount = 0;
 
-    public Double getRating() { return rating != null ? rating : 0.0; }
-    public void setRating(Double rating) { this.rating = rating; }
+    public Double getRating() {
+        return rating != null ? rating : 0.0;
+    }
 
-    public Integer getRatingCount() { return ratingCount != null ? ratingCount : 0; }
-    public void setRatingCount(Integer ratingCount) { this.ratingCount = ratingCount; }
+    public Integer getRatingCount() {
+        return ratingCount != null ? ratingCount : 0;
+    }
 }

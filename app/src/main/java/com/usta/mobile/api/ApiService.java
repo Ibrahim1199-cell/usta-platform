@@ -35,5 +35,16 @@ public interface ApiService {
     Call<List<Order>> getMasterOrders(@Path("id") Long masterId);
 
     @PUT("api/orders/{id}/status")
-    Call<Order> updateOrderStatus(@Path("id") Long orderId, @Query("status") String status);
+    Call<Order> updateOrderStatus(
+            @Path("id") Long orderId,
+            @Query("status") String status,
+            @Query("price") Double price
+    );
+
+    @POST("api/orders/{id}/rate")
+    Call<Order> rateOrder(
+            @Path("id") Long orderId,
+            @Query("rating") Integer rating,
+            @Query("review") String review
+    );
 }

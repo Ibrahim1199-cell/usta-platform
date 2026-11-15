@@ -20,7 +20,7 @@ public class BackendApplication {
 		ds.setDriverClassName("org.postgresql.Driver");
 		ds.setJdbcUrl("jdbc:postgresql://aws-1-eu-west-1.pooler.supabase.com:5432/postgres");
 		ds.setUsername("postgres.jbtazoqcjvrcnnedgxne");
-		ds.setPassword("ibrahimsupabase20082026");
+		ds.setPassword("ibrahim2026db");
 		ds.setMaximumPoolSize(3);
 		return ds;
 	}

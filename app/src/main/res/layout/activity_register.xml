@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F7FA"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yeni Hesab Yarat"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="#1B365D"
+            android:layout_marginBottom="16dp" />
+
+        <RadioGroup
+            android:id="@+id/rgRole"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/rbCustomer"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Müştəriyəm"
+                android:checked="true"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/rbMaster"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Ustayam"
+                android:textSize="16sp" />
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/etRegFullName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Ad və Soyad"
+            android:inputType="textPersonName"
+            android:background="@android:drawable/edit_text"
+            android:padding="12dp"
+            android:layout_marginBottom="10dp" />
+
+        <EditText
+            android:id="@+id/etRegPhone"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Telefon nömrəsi (0501234567)"
+            android:inputType="phone"
+            android:background="@android:drawable/edit_text"
+            android:padding="12dp"
+            android:layout_marginBottom="10dp" />
+
+        <EditText
+            android:id="@+id/etRegPassword"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Şifrə"
+            android:inputType="textPassword"
+            android:background="@android:drawable/edit_text"
+            android:padding="12dp"
+            android:layout_marginBottom="10dp" />
+
+        <EditText
+            android:id="@+id/etRegCity"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Şəhər (məs: Bakı)"
+            android:inputType="text"
+            android:background="@android:drawable/edit_text"
+            android:padding="12dp"
+            android:layout_marginBottom="10dp" />
+
+        <!-- Yalnız Usta seçildikdə görünən sahələr -->
+        <LinearLayout
+            android:id="@+id/layoutMasterFields"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <Spinner
+                android:id="@+id/spinnerCategory"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="10dp" />
+
+            <EditText
+                android:id="@+id/etRegExperience"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Təcrübə (məs: 5 il)"
+                android:inputType="number"
+                android:background="@android:drawable/edit_text"
+                android:padding="12dp"
+                android:layout_marginBottom="10dp" />
+
+            <EditText
+                android:id="@+id/etRegAbout"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:hint="Gördüyünüz işlər haqqında qısa məlumat"
+                android:inputType="textMultiLine"
+                android:gravity="top"
+                android:background="@android:drawable/edit_text"
+                android:padding="12dp"
+                android:layout_marginBottom="10dp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="Qeydiyyatı Tamamla"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:backgroundTint="#1B365D"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="8dp" />
+
+        <ProgressBar
+            android:id="@+id/progressRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_marginTop="12dp" />
+
+    </LinearLayout>
+</ScrollView>

@@ -80,14 +80,52 @@ public class AppController {
         return orderRepository.findByMasterIdOrderByCreatedAtDesc(masterId);
     }
 
-    // 8. Sifarişin Statusunu Dəyişmək (Usta Qəbul edir / İmtina edir / Tamamlayır)
+    // 8. Sifarişin Statusunu və Qiymətini Yeniləmək
     @PutMapping("/orders/{orderId}/status")
-    public ResponseEntity<?> updateOrderStatus(@PathVariable Long orderId, @RequestParam String status) {
+    public ResponseEntity<?> updateOrderStatus(
+            @PathVariable Long orderId,
+            @RequestParam String status,
+            @RequestParam(required = false) Double price) {
         Optional<Order> orderOpt = orderRepository.findById(orderId);
         if (orderOpt.isPresent()) {
             Order order = orderOpt.get();
             order.setStatus(status);
+            if (price != null) {
+                order.setPrice(price);
+            }
             return ResponseEntity.ok(orderRepository.save(order));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // 9. Müştərinin Tamamlanmış Sifarişə Ulduz və Rəy Verməsi
+    @PostMapping("/orders/{orderId}/rate")
+    public ResponseEntity<?> rateOrder(
+            @PathVariable Long orderId,
+            @RequestParam Integer rating,
+            @RequestParam(required = false) String review) {
+        Optional<Order> orderOpt = orderRepository.findById(orderId);
+        if (orderOpt.isPresent()) {
+            Order order = orderOpt.get();
+            if (order.getRating() != null) {
+                return ResponseEntity.badRequest().body("Bu sifariş artıq qiymətləndirilib!");
+            }
+            order.setRating(rating);
+            order.setReview(review);
+            orderRepository.save(order);
+
+            // Ustanın ümumi reytinq ortalamasını yeniləyirik
+            if (order.getMasterId() != null) {
+                userRepository.findById(order.getMasterId()).ifPresent(master -> {
+                    int count = master.getRatingCount();
+                    double currentAvg = master.getRating();
+                    double newAvg = ((currentAvg * count) + rating) / (count + 1);
+                    master.setRatingCount(count + 1);
+                    master.setRating(Math.round(newAvg * 10.0) / 10.0);
+                    userRepository.save(master);
+                });
+            }
+            return ResponseEntity.ok(order);
         }
         return ResponseEntity.notFound().build();
     }

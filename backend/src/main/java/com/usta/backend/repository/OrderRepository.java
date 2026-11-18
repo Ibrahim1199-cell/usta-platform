@@ -12,4 +12,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByMasterIdOrderByCreatedAtDesc(Long masterId);
 
     List<Order> findByMasterIdAndRatingIsNotNullOrderByIdDesc(Long masterId);
+
 }

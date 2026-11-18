@@ -52,4 +52,12 @@ public class User {
 
     public String getPortfolioUrls() { return portfolioUrls; }
     public void setPortfolioUrls(String portfolioUrls) { this.portfolioUrls = portfolioUrls; }
+
+    private String avatarUrl;
+
+    @Column(length = 2000)
+    private String portfolioUrls;
+
+    private Double rating = 0.0;
+    private Integer ratingCount = 0;
 }

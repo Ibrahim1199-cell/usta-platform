@@ -46,4 +46,13 @@ public class Order {
     public String getMasterReply() { return masterReply; }
     public void setMasterReply(String masterReply) { this.masterReply = masterReply; }
 
+    private Double price;
+    private Integer rating;
+
+    @Column(length = 1000)
+    private String review;
+
+    @Column(length = 1000)
+    private String masterReply;
+
 }

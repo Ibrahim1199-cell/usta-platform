@@ -1,7 +1,9 @@
 package com.usta.backend.controller;
 
+import com.usta.backend.model.Message;
 import com.usta.backend.model.Order;
 import com.usta.backend.model.User;
+import com.usta.backend.repository.MessageRepository;
 import com.usta.backend.repository.OrderRepository;
 import com.usta.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class AppController {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private MessageRepository messageRepository;
 
     // 1. Serverin işlədiyini yoxlamaq üçün test ünvanı
     @GetMapping("/test")
@@ -128,5 +133,56 @@ public class AppController {
             return ResponseEntity.ok(order);
         }
         return ResponseEntity.notFound().build();
+    }
+
+    // 10. İstifadəçi məlumatlarını gətir
+    @GetMapping("/users/{id}")
+    public ResponseEntity<?> getUser(@PathVariable Long id) {
+        return userRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // 11. Profil və Portfolio yeniləmək
+    @PutMapping("/users/{id}")
+    public ResponseEntity<?> updateProfile(@PathVariable Long id, @RequestBody User updated) {
+        return userRepository.findById(id).map(user -> {
+            if (updated.getFullName() != null) user.setFullName(updated.getFullName());
+            if (updated.getCity() != null) user.setCity(updated.getCity());
+            if (updated.getCategory() != null) user.setCategory(updated.getCategory());
+            if (updated.getExperience() != null) user.setExperience(updated.getExperience());
+            if (updated.getAbout() != null) user.setAbout(updated.getAbout());
+            if (updated.getAvatarUrl() != null) user.setAvatarUrl(updated.getAvatarUrl());
+            if (updated.getPortfolioUrls() != null) user.setPortfolioUrls(updated.getPortfolioUrls());
+            return ResponseEntity.ok(userRepository.save(user));
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    // 12. Ustanın bütün rəylərini gətir
+    @GetMapping("/masters/{masterId}/reviews")
+    public List<Order> getMasterReviews(@PathVariable Long masterId) {
+        return orderRepository.findByMasterIdAndRatingIsNotNullOrderByIdDesc(masterId);
+    }
+
+    // 13. Ustanın rəyə cavab (geri dönüş) yazması
+    @PostMapping("/orders/{orderId}/reply")
+    public ResponseEntity<?> replyToReview(@PathVariable Long orderId, @RequestParam String reply) {
+        return orderRepository.findById(orderId).map(order -> {
+            order.setMasterReply(reply);
+            return ResponseEntity.ok(orderRepository.save(order));
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    // 14. Sifariş daxili mesajları gətir
+    @GetMapping("/orders/{orderId}/messages")
+    public List<Message> getOrderMessages(@PathVariable Long orderId) {
+        return messageRepository.findByOrderIdOrderByIdAsc(orderId);
+    }
+
+    // 15. Sifariş daxili mesaj və ya şəkil göndər
+    @PostMapping("/orders/{orderId}/messages")
+    public Message sendOrderMessage(@PathVariable Long orderId, @RequestBody Message message) {
+        message.setOrderId(orderId);
+        return messageRepository.save(message);
     }
 }

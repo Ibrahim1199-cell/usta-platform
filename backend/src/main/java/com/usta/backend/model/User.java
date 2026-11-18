@@ -41,4 +41,15 @@ public class User {
     public Integer getRatingCount() {
         return ratingCount != null ? ratingCount : 0;
     }
+    private String avatarUrl;
+
+    @Column(columnDefinition = "TEXT")
+    private String portfolioUrls; // Şəkil linkləri "||" ilə ayrılaraq saxlanacaq
+
+    // Getter və Setter-ləri əlavə et:
+    public String getAvatarUrl() { return avatarUrl; }
+    public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
+
+    public String getPortfolioUrls() { return portfolioUrls; }
+    public void setPortfolioUrls(String portfolioUrls) { this.portfolioUrls = portfolioUrls; }
 }

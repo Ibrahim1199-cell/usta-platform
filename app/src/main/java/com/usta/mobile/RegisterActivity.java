@@ -45,6 +45,8 @@ public class RegisterActivity extends AppCompatActivity {
         etAbout = findViewById(R.id.etRegAbout);
         btnRegister = findViewById(R.id.btnRegister);
         progressBar = findViewById(R.id.progressRegister);
+        findViewById(R.id.tvBackToLogin).setOnClickListener(v -> finish());
+
 
         // Usta ixtisas kateqoriyaları
         String[] categories = {"Santexnik", "Elektrik", "Mebel ustası", "Kombi/Kondisioner", "Təmir-tikinti", "Avto usta"};

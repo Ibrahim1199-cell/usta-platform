@@ -39,4 +39,11 @@ public class Order {
 
     public String getReview() { return review; }
     public void setReview(String review) { this.review = review; }
+
+    @Column(columnDefinition = "TEXT")
+    private String masterReply;
+
+    public String getMasterReply() { return masterReply; }
+    public void setMasterReply(String masterReply) { this.masterReply = masterReply; }
+
 }

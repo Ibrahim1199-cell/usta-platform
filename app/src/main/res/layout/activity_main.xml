@@ -1,75 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="24dp"
-    android:background="#F5F7FA">
+    android:background="#FFFFFF"
+    android:fillViewport="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Usta-Müştəri"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:textColor="#1B365D"
-        android:layout_marginBottom="8dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hesabınıza daxil olun"
-        android:textSize="15sp"
-        android:textColor="#64748B"
-        android:layout_marginBottom="32dp" />
-
-    <EditText
-        android:id="@+id/etLoginPhone"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:hint="Telefon nömrəsi (məs: 0501234567)"
-        android:inputType="phone"
-        android:background="@android:drawable/edit_text"
-        android:padding="12dp"
-        android:layout_marginBottom="12dp" />
-
-    <EditText
-        android:id="@+id/etLoginPassword"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:hint="Şifrə"
-        android:inputType="textPassword"
-        android:background="@android:drawable/edit_text"
-        android:padding="12dp"
-        android:layout_marginBottom="20dp" />
-
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:text="Daxil ol"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:backgroundTint="#1B365D"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="16dp" />
-
-    <ProgressBar
-        android:id="@+id/progressLogin"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_marginBottom="16dp" />
+        android:orientation="vertical"
+        android:padding="28dp">
 
-    <TextView
-        android:id="@+id/tvGoToRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hesabınız yoxdur? Qeydiyyatdan keçin"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:textColor="#2B6CB0"
-        android:padding="8dp" />
+        <!-- Loqo və Sloqan -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Masterly."
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="#1E293B"
+            android:layout_marginTop="16dp" />
 
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EVİNİZ ETİBARLI ƏLLƏRDƏ"
+            android:textSize="10sp"
+            android:letterSpacing="0.12"
+            android:textStyle="bold"
+            android:textColor="#64748B"
+            android:layout_marginBottom="40dp" />
+
+        <!-- Başlıq -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Xoş gəldiniz"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="#0F172A" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Növbəti işiniz üçün hesabınıza daxil olun."
+            android:textSize="14sp"
+            android:textColor="#64748B"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="28dp" />
+
+        <!-- Telefon Nömrəsi -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Telefon nömrəsi"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="#1E293B"
+            android:layout_marginBottom="6dp" />
+
+        <EditText
+            android:id="@+id/etLoginPhone"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:hint="050 000 00 00"
+            android:inputType="phone"
+            android:textSize="15sp"
+            android:textColor="#0F172A"
+            android:textColorHint="#94A3B8"
+            android:background="@drawable/bg_input_rounded"
+            android:paddingHorizontal="16dp"
+            android:layout_marginBottom="18dp" />
+
+        <!-- Şifrə -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Şifrə"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="#1E293B"
+            android:layout_marginBottom="6dp" />
+
+        <EditText
+            android:id="@+id/etLoginPassword"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:hint="Şifrənizi daxil edin"
+            android:inputType="textPassword"
+            android:textSize="15sp"
+            android:textColor="#0F172A"
+            android:textColorHint="#94A3B8"
+            android:background="@drawable/bg_input_rounded"
+            android:paddingHorizontal="16dp"
+            android:layout_marginBottom="24dp" />
+
+        <ProgressBar
+            android:id="@+id/progressLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Daxil Ol Düyməsi (Tünd Yaşıl) -->
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="Daxil ol"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#2D5A3C" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Bütün ev işləriniz bir məkanda."
+            android:textSize="12sp"
+            android:textColor="#94A3B8"
+            android:layout_marginTop="14dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Qeydiyyat Keçidi -->
+        <TextView
+            android:id="@+id/tvGoToRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Hesabınız yoxdur? Qeydiyyatdan keçin"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#2D5A3C"
+            android:padding="12dp"
+            android:layout_marginTop="24dp" />
+
+    </LinearLayout>
+</ScrollView>

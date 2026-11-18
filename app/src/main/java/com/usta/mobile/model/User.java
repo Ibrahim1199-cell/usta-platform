@@ -51,5 +51,5 @@ public class User implements Serializable {
     public Integer getRatingCount() { return ratingCount != null ? ratingCount : 0; }
     public void setRatingCount(Integer ratingCount) { this.ratingCount = ratingCount; }
 
-    
+
 }

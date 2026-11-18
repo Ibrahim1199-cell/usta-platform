@@ -10,4 +10,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     // Ustanın adına gələn sifarişləri gətirmək
     List<Order> findByMasterIdOrderByCreatedAtDesc(Long masterId);
+
+    List<Order> findByMasterIdAndRatingIsNotNullOrderByIdDesc(Long masterId);
 }

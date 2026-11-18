@@ -119,11 +119,10 @@ public class AppController {
             order.setReview(review);
             orderRepository.save(order);
 
-            // Ustanın ümumi reytinq ortalamasını yeniləyirik
             if (order.getMasterId() != null) {
                 userRepository.findById(order.getMasterId()).ifPresent(master -> {
-                    int count = master.getRatingCount();
-                    double currentAvg = master.getRating();
+                    int count = master.getRatingCount() != null ? master.getRatingCount() : 0;
+                    double currentAvg = master.getRating() != null ? master.getRating() : 0.0;
                     double newAvg = ((currentAvg * count) + rating) / (count + 1);
                     master.setRatingCount(count + 1);
                     master.setRating(Math.round(newAvg * 10.0) / 10.0);

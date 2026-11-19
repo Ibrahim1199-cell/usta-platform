@@ -2,9 +2,9 @@
 // KONFİQURASİYA VƏ QLOBAL DƏYİŞƏNLƏR
 // =========================================================
 const BASE_URL = "https://usta-platform.onrender.com";
-const SUPABASE_URL = "https://jbtazoqcjvrcnnedgxne.supabase.co/rest/v1/";
+const SUPABASE_URL = "https://jbtazoqcjvrcnnedgxne.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpidGF6b3FjanZyY25uZWRneG5lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ3NDQ4MjMsImV4cCI6MjExMDMyMDgyM30.0dnwuMPvMlRCAdIg6F9NIENmqxJoiyxATwQ3W9tOQ-o";
-
+const SUPABASE_BUCKET = "usta-images";
 const CATEGORIES = [
     "Hamısı",
     "Santexnik",

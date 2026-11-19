@@ -1,90 +1,29 @@
-:root {
-    --brand: #21664f;
-    --brand-dark: #1a5240;
-    --ink: #203831;
-    --canvas: #f8f9f7;
-    --line: #e0e6e1;
-}
-
 * {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-body {
-    background: var(--canvas);
-    color: var(--ink);
-}
-
-/* ---------- Form controls ---------- */
 .input-field {
     width: 100%;
-    height: 46px;
+    height: 44px;
     padding-left: 14px;
     padding-right: 14px;
     border-radius: 12px;
-    border: 1px solid var(--line);
-    background-color: #FFFFFF;
-    font-size: 14px;
-    color: var(--ink);
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    border: 1px solid #DCE2DE;
+    font-size: 13.5px;
+    color: #0F172A;
+    transition: all 0.2s ease;
 }
 
-.input-field::placeholder,
-textarea::placeholder { color: #8b9d94; }
-
-.input-field:focus,
-textarea:focus {
+.input-field:focus {
     outline: none;
-    border-color: var(--brand);
-    box-shadow: 0 0 0 3px rgba(33, 102, 79, 0.14);
+    border-color: #1F563D;
+    box-shadow: 0 0 0 3px rgba(31, 86, 61, 0.12);
 }
 
-:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
-.input-field:focus-visible, textarea:focus-visible { outline: none; }
-
-/* ---------- Auth + hero surfaces ---------- */
-.auth-aside,
-.hero-card {
-    background: var(--ink);
-    color: #FFFFFF;
-    position: relative;
-    overflow: hidden;
-}
-
-.auth-aside::before {
-    content: "";
-    position: absolute;
-    left: -140px;
-    bottom: -160px;
-    width: 420px;
-    height: 420px;
-    border-radius: 50%;
-    background: var(--brand);
-    opacity: 0.55;
-    pointer-events: none;
-}
-
-.hero-card::after {
-    content: "";
-    position: absolute;
-    right: -90px;
-    top: -110px;
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-    background: var(--brand);
-    opacity: 0.5;
-    pointer-events: none;
-}
-
-.auth-aside > *,
-.hero-card > * { position: relative; z-index: 1; }
-
-/* ---------- Modals ---------- */
 .modal-backdrop {
     position: fixed;
     inset: 0;
-    background-color: rgba(32, 56, 49, 0.55);
+    background-color: rgba(15, 23, 42, 0.45);
     backdrop-filter: blur(4px);
     z-index: 60;
     display: flex;
@@ -94,83 +33,94 @@ textarea:focus {
     animation: fadeIn 0.18s ease-out;
 }
 
-.modal-backdrop.hidden { display: none !important; }
+.modal-backdrop.hidden {
+    display: none !important;
+}
 
 .modal-card {
     background: #FFFFFF;
     width: 100%;
-    border-radius: 22px;
-    box-shadow: 0 24px 48px -16px rgba(32, 56, 49, 0.35);
-    border: 1px solid var(--line);
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.22);
+    border: 1px solid #E6EAE7;
     animation: slideUp 0.22s ease-out;
 }
 
-#chatModal .modal-card {
-    height: min(85vh, 720px);
-    max-height: calc(100dvh - 32px);
-}
-
 .modal-close-btn {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #5d7168;
+    color: #64748B;
     cursor: pointer;
-    transition: background-color 0.15s, color 0.15s;
+    transition: all 0.15s;
 }
 
-.modal-close-btn:hover { background-color: #eef1ee; color: var(--ink); }
+.modal-close-btn:hover {
+    background-color: #F1F5F3;
+    color: #0F172A;
+}
 
-/* ---------- Category pills ---------- */
 .cat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     padding: 8px 16px;
     border-radius: 9999px;
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 600;
     white-space: nowrap;
-    border: 1px solid var(--line);
+    border: 1px solid #E2E7E4;
     background: #FFFFFF;
-    color: #475a52;
+    color: #334155;
     transition: all 0.18s ease;
     cursor: pointer;
 }
 
-.cat-pill:hover { border-color: var(--brand); color: var(--brand); }
+.cat-pill:hover {
+    border-color: #1F563D;
+    color: #1F563D;
+}
 
 .cat-pill.active {
-    background: var(--brand);
-    border-color: var(--brand);
+    background: #1F563D;
+    border-color: #1F563D;
     color: #FFFFFF;
+    box-shadow: 0 4px 12px rgba(31, 86, 61, 0.18);
 }
 
-.hero-card .cat-pill {
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
     background: transparent;
-    border-color: rgba(255, 255, 255, 0.28);
-    color: rgba(255, 255, 255, 0.85);
 }
-.hero-card .cat-pill:hover { border-color: #FFFFFF; color: #FFFFFF; }
-.hero-card .cat-pill.active { background: var(--canvas); border-color: var(--canvas); color: var(--ink); }
 
-#mobileNav { padding-bottom: calc(0.375rem + env(safe-area-inset-bottom, 0px)); }
+::-webkit-scrollbar-thumb {
+    background: #CBD5CE;
+    border-radius: 9999px;
+}
 
-/* ---------- Scrollbar ---------- */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #c8d2cb; border-radius: 9999px; }
-
-/* ---------- Motion ---------- */
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
 
 @keyframes slideUp {
-    from { opacity: 0; transform: translateY(14px) scale(0.98); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+    from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
-.animate-fade-in { animation: fadeIn 0.25s ease-out; }
-
-@media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; }
+.animate-fade-in {
+    animation: fadeIn 0.25s ease-out;
 }

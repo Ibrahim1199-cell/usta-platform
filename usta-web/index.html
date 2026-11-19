@@ -2,248 +2,286 @@
 <html lang="az">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>usta. — Eviniz etibarlı əllərdə</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = { theme: { extend: {
-            colors: {
-                brand: { DEFAULT: '#21664f', dark: '#1a5240', soft: '#e6f0ec' },
-                ink: '#203831', canvas: '#f8f9f7',
-                slate: { 50:'#f8f9f7',100:'#eef1ee',200:'#e0e6e1',300:'#c8d2cb',400:'#8b9d94',500:'#5d7168',600:'#475a52',700:'#33463e',800:'#2a3d36',900:'#203831' }
-            },
-            borderRadius: { xl:'12px', '2xl':'16px', '3xl':'22px' }
-        } } };
-    </script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-[#f8f9f7] text-[#203831] min-h-screen antialiased selection:bg-[#21664f] selection:text-white">
+<body class="bg-[#FAFBF9] text-[#0F172A] min-h-screen antialiased selection:bg-[#1F563D] selection:text-white">
 
     <!-- BİLDİRİŞLƏR (TOAST CONTAINER) -->
     <div id="toastContainer" class="fixed top-5 right-5 z-[100] flex flex-col gap-2.5 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
 
     <!-- =========================================================
-         1. GİRİŞ VƏ QEYDİYYAT EKRANI (AUTH SECTION)
+         1. GİRİŞ VƏ QEYDİYYAT EKRANI (FIGMA 01 & 02)
          ========================================================= -->
-    <div id="authSection" class="min-h-screen grid lg:grid-cols-[1.05fr_1fr] bg-canvas">
-        <aside class="auth-aside hidden lg:flex flex-col justify-between p-12 xl:p-16">
-            <div class="flex items-center gap-2.5">
-                <span class="text-3xl font-extrabold tracking-tight">usta<span class="text-[#8fd1b6]">.</span></span>
-            </div>
-            <div class="max-w-md space-y-6">
-                <h2 class="text-5xl font-extrabold tracking-tight leading-[1.08]">Eviniz etibarlı əllərdə.</h2>
-                <p class="text-base text-white/70 leading-relaxed">Santexnik, elektrik, mebel və təmir ustalarını bir yerdə tapın, qiyməti işə başlamazdan əvvəl razılaşdırın.</p>
-                <ul class="space-y-3.5 pt-2 text-sm text-white/85">
-                    <li class="flex items-center gap-3"><i data-lucide="shield-check" class="w-5 h-5 text-[#8fd1b6] shrink-0"></i>Yoxlanılmış ustalar və real müştəri rəyləri</li>
-                    <li class="flex items-center gap-3"><i data-lucide="message-circle" class="w-5 h-5 text-[#8fd1b6] shrink-0"></i>Sifariş daxilində mesaj, şəkil və konum paylaşımı</li>
-                    <li class="flex items-center gap-3"><i data-lucide="badge-check" class="w-5 h-5 text-[#8fd1b6] shrink-0"></i>Usta qiyməti təklif edir, siz təsdiq edirsiniz</li>
-                </ul>
-            </div>
-            <p class="text-xs text-white/40">© usta.</p>
-        </aside>
+    <div id="authSection" class="min-h-screen flex flex-col bg-[#FAFBF9]">
+        <!-- Üst Minimal Header -->
+        <header class="w-full border-b border-[#E6EAE7] bg-[#FAFBF9]/90 backdrop-blur-md">
+            <div class="max-w-6xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-[#1F563D] text-white flex items-center justify-center font-extrabold text-base shadow-sm">u</div>
+                        <span class="text-xl font-extrabold tracking-tight text-slate-900">usta<span class="text-[#1F563D]">.</span></span>
+                    </div>
+                    <span class="hidden sm:inline-block text-xs text-slate-400 border-l border-slate-200 pl-4">Yaxşı insanlar. Yaxşı işlər.</span>
+                </div>
 
-        <main class="flex items-center justify-center p-5 sm:p-10">
-            <div class="w-full max-w-md animate-fade-in">
-                <div class="lg:hidden flex items-center justify-between mb-8">
+                <div id="authTopAction" class="flex items-center gap-2 text-xs">
+                    <span class="text-slate-500 hidden sm:inline">Hələ hesabınız yoxdur?</span>
+                    <button type="button" onclick="switchAuthMode('register')" class="font-bold text-[#1F563D] hover:underline flex items-center gap-1">
+                        <span>Qeydiyyat</span>
+                        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 2 Sütunlu Əsas Məzmun -->
+        <div class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-8 py-6 sm:py-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            
+            <!-- Sol Vizual Kart -->
+            <div class="hidden lg:flex lg:col-span-6 relative h-[620px] rounded-[28px] overflow-hidden shadow-xl shadow-slate-200/70 border border-[#E6EAE7] flex-col justify-between p-8 text-white">
+                <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80"
+                    alt="Ev təmiri" class="absolute inset-0 w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-[#123324]/95 via-[#184430]/40 to-black/15"></div>
+
+                <!-- Üst Nişan -->
+                <div class="relative z-10">
+                    <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 text-[#1F563D] text-[10px] font-extrabold uppercase tracking-wider shadow-sm">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#1F563D]"></span>
+                        SİZİN ƏRAZİNİZİN USTALARI
+                    </span>
+                </div>
+
+                <!-- Alt Mətn və Reytinq -->
+                <div class="relative z-10 space-y-5">
+                    <div class="space-y-2.5">
+                        <h2 id="authHeroTitle" class="text-3xl font-extrabold leading-tight tracking-tight">
+                            Kiçik bir kömək.<br>Daha xoşbəxt bir ev.
+                        </h2>
+                        <p id="authHeroSub" class="text-sm text-white/85 max-w-md leading-relaxed">
+                            Su sızmasından son tamamlama işlərinə qədər — etibar edə biləcəyiniz peşəkar ustaları tapın.
+                        </p>
+                    </div>
+
+                    <div class="pt-4 border-t border-white/20 flex items-center gap-4">
+                        <span class="text-2xl font-extrabold">4.9 / 5</span>
+                        <span class="text-xs text-white/80">2,400+ məmnun müştəri tərəfindən qiymətləndirilib</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sağ Form Sütunu -->
+            <div class="lg:col-span-6 w-full max-w-md mx-auto animate-fade-in">
+                
+                <!-- GİRİŞ FORMU -->
+                <div id="loginBox" class="space-y-6">
                     <div>
-                        <h1 class="text-3xl font-extrabold tracking-tight text-ink">usta<span class="text-[#21664f]">.</span></h1>
-                        <p class="text-sm text-slate-500 mt-0.5">Eviniz etibarlı əllərdə</p>
+                        <p class="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#1F563D] mb-1.5">XOŞ GƏLDİNİZ</p>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Sizi yenidən görmək xoşdur.</h1>
+                        <p class="text-xs sm:text-sm text-slate-500 mt-1">Növbəti ev layihəniz buradan başlayır.</p>
                     </div>
-                    <div class="w-11 h-11 rounded-2xl bg-[#21664f]/10 text-[#21664f] flex items-center justify-center"><i data-lucide="wrench" class="w-5 h-5"></i></div>
-                </div>
-                <p class="hidden lg:block text-sm text-slate-500 mb-6">Davam etmək üçün hesabınıza daxil olun və ya yeni hesab yaradın.</p>
-                <!-- Tab Keçidi -->
-            <div class="grid grid-cols-2 bg-slate-100 p-1 rounded-2xl mb-7">
-                <button id="authTabLogin" onclick="switchAuthMode('login')"
-                    class="py-2.5 text-sm font-bold rounded-xl bg-white text-slate-900 shadow-sm transition-all">
-                    Daxil ol
-                </button>
-                <button id="authTabRegister" onclick="switchAuthMode('register')"
-                    class="py-2.5 text-sm font-bold rounded-xl text-slate-500 hover:text-slate-800 transition-all">
-                    Qeydiyyat
-                </button>
-            </div>
 
-            <!-- GİRİŞ FORMU -->
-            <form id="loginBox" onsubmit="handleLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Telefon nömrəsi</label>
-                    <div class="relative">
-                        <i data-lucide="phone" class="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
-                        <input id="loginPhone" type="tel" required placeholder="050 123 45 67"
-                            class="input-field pl-11">
+                    <!-- Rol Seçim Tabı (Vizual) -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-2">Daxil olmaq istədiyiniz hesab</label>
+                        <div class="grid grid-cols-2 bg-[#EFF2EF] p-1 rounded-xl">
+                            <button type="button" id="loginRoleCustomer" onclick="setLoginRoleHint('MUSTERI')"
+                                class="py-2 text-xs font-bold rounded-lg bg-white text-slate-900 shadow-sm transition-all">
+                                Müştəri
+                            </button>
+                            <button type="button" id="loginRoleMaster" onclick="setLoginRoleHint('USTA')"
+                                class="py-2 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-800 transition-all">
+                                Usta (Peşəkar)
+                            </button>
+                        </div>
+                        <p id="loginRoleHintText" class="text-[11px] text-slate-400 mt-1.5">Sifarişlərinizi idarə edin və etibarlı ustalar tapın.</p>
                     </div>
-                </div>
 
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Şifrə</label>
-                    <div class="relative">
-                        <i data-lucide="lock" class="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
-                        <input id="loginPassword" type="password" required placeholder="••••••••"
-                            class="input-field pl-11 pr-11">
-                        <button type="button" onclick="togglePassword('loginPassword', this)"
-                            class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-                            <i data-lucide="eye" class="w-4 h-4"></i>
+                    <form onsubmit="handleLogin(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">Telefon nömrəsi</label>
+                            <input id="loginPhone" type="tel" required placeholder="050 123 45 67" class="input-field bg-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">Şifrə</label>
+                            <div class="relative">
+                                <input id="loginPassword" type="password" required placeholder="••••••••" class="input-field bg-white pr-11">
+                                <button type="button" onclick="togglePassword('loginPassword', this)"
+                                    class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="btnLogin"
+                            class="w-full h-11 bg-[#1F563D] hover:bg-[#184430] active:scale-[0.99] text-white font-bold text-sm rounded-xl shadow-md shadow-[#1F563D]/15 transition-all flex items-center justify-center gap-2 mt-2">
+                            <span>Daxil ol</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
                         </button>
-                    </div>
+                    </form>
+
+                    <p class="text-center text-xs text-slate-500 pt-2">
+                        Hesabınız yoxdur?
+                        <button type="button" onclick="switchAuthMode('register')" class="font-bold text-[#1F563D] hover:underline ml-1">Qeydiyyatdan keçin</button>
+                    </p>
                 </div>
 
-                <button type="submit" id="btnLogin"
-                    class="w-full h-12 bg-[#21664f] hover:bg-[#1a5240] active:scale-[0.99] text-white font-bold rounded-2xl shadow-lg shadow-[#21664f]/20 transition-all flex items-center justify-center gap-2 mt-2">
-                    <span>Hesaba daxil ol</span>
-                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                </button>
-            </form>
-
-            <!-- QEYDİYYAT FORMU -->
-            <form id="registerBox" onsubmit="handleRegister(event)" class="hidden space-y-4">
-                <!-- Rol Seçimi Kartları -->
-                <div class="grid grid-cols-2 gap-3">
-                    <label class="cursor-pointer">
-                        <input type="radio" name="regRole" value="MUSTERI" checked onchange="toggleMasterInputs()" class="peer hidden">
-                        <div class="p-3.5 rounded-2xl border-2 border-slate-200 peer-checked:border-[#21664f] peer-checked:bg-[#21664f]/5 transition-all flex flex-col items-center text-center gap-1.5">
-                            <i data-lucide="user" class="w-5 h-5 text-slate-700"></i>
-                            <span class="text-xs font-bold text-slate-800">Müştəriyəm</span>
-                        </div>
-                    </label>
-                    <label class="cursor-pointer">
-                        <input type="radio" name="regRole" value="USTA" onchange="toggleMasterInputs()" class="peer hidden">
-                        <div class="p-3.5 rounded-2xl border-2 border-slate-200 peer-checked:border-[#21664f] peer-checked:bg-[#21664f]/5 transition-all flex flex-col items-center text-center gap-1.5">
-                            <i data-lucide="hard-hat" class="w-5 h-5 text-slate-700"></i>
-                            <span class="text-xs font-bold text-slate-800">Ustayam</span>
-                        </div>
-                    </label>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Ad və Soyad</label>
-                    <input id="regName" type="text" required placeholder="Məs: Əli Məmmədov" class="input-field">
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <!-- QEYDİYYAT FORMU -->
+                <div id="registerBox" class="hidden space-y-5">
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Telefon</label>
-                        <input id="regPhone" type="tel" required placeholder="0501234567" class="input-field">
+                        <p class="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#1F563D] mb-1.5">ÖZÜNÜZÜ EVİNİZDƏKİ KİMİ HİSS EDİN</p>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Platformaya qoşulun.</h1>
+                        <p class="text-xs sm:text-sm text-slate-500 mt-1">Daha rahat ev doğru ustalarla başlayır.</p>
                     </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Şəhər</label>
-                        <input id="regCity" type="text" required placeholder="Məs: Bakı" class="input-field">
-                    </div>
-                </div>
 
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Şifrə</label>
-                    <input id="regPassword" type="password" required placeholder="Minimum 6 simvol" class="input-field">
-                </div>
-
-                <!-- Yalnız Usta üçün əlavə sahələr -->
-                <div id="masterExtraInputs" class="hidden space-y-3 pt-2 border-t border-slate-100 animate-fade-in">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <form onsubmit="handleRegister(event)" class="space-y-3.5">
+                        <!-- Rol Seçimi -->
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">İxtisas / Sahə</label>
-                            <select id="regCategory" class="input-field bg-white">
-                                <option value="Santexnik">Santexnik</option>
-                                <option value="Elektrik">Elektrik</option>
-                                <option value="Mebel ustası">Mebel ustası</option>
-                                <option value="Kombi/Kondisioner">Kombi/Kondisioner</option>
-                                <option value="Təmir-tikinti">Təmir-tikinti</option>
-                                <option value="Avto usta">Avto usta</option>
-                            </select>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">Qoşulma məqsədiniz</label>
+                            <div class="grid grid-cols-2 bg-[#EFF2EF] p-1 rounded-xl">
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="regRole" value="MUSTERI" checked onchange="toggleMasterInputs()" class="peer hidden">
+                                    <div class="py-2 text-center text-xs font-bold rounded-lg text-slate-500 peer-checked:bg-white peer-checked:text-slate-900 peer-checked:shadow-sm transition-all">
+                                        Müştəriyəm
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="regRole" value="USTA" onchange="toggleMasterInputs()" class="peer hidden">
+                                    <div class="py-2 text-center text-xs font-bold rounded-lg text-slate-500 peer-checked:bg-white peer-checked:text-slate-900 peer-checked:shadow-sm transition-all">
+                                        Ustayam (Peşəkar)
+                                    </div>
+                                </label>
+                            </div>
                         </div>
+
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Təcrübə (il)</label>
-                            <input id="regExperience" type="number" min="0" max="50" placeholder="Məs: 5" class="input-field">
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Ad və Soyad</label>
+                            <input id="regName" type="text" required placeholder="Məs: Əli Məmmədov" class="input-field bg-white">
                         </div>
-                    </div>
 
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Haqqınızda və xidmətlər</label>
-                        <textarea id="regAbout" rows="2" placeholder="Gördüyünüz işlər haqqında qısa məlumat yazın..."
-                            class="w-full p-3.5 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-[#21664f] transition"></textarea>
-                    </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Telefon nömrəsi</label>
+                                <input id="regPhone" type="tel" required placeholder="0501234567" class="input-field bg-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Şəhər</label>
+                                <input id="regCity" type="text" required placeholder="Məs: Bakı" class="input-field bg-white">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Şifrə</label>
+                            <input id="regPassword" type="password" required placeholder="Güclü şifrə təyin edin" class="input-field bg-white">
+                        </div>
+
+                        <!-- Yalnız Usta üçün əlavə sahələr -->
+                        <div id="masterExtraInputs" class="hidden space-y-3 pt-2 border-t border-[#E6EAE7] animate-fade-in">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">İxtisas / Sahə</label>
+                                    <select id="regCategory" class="input-field bg-white">
+                                        <option value="Santexnik">Santexnik</option>
+                                        <option value="Elektrik">Elektrik</option>
+                                        <option value="Mebel ustası">Mebel ustası</option>
+                                        <option value="Kombi/Kondisioner">Kombi/Kondisioner</option>
+                                        <option value="Təmir-tikinti">Təmir-tikinti</option>
+                                        <option value="Avto usta">Avto usta</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Təcrübə (il)</label>
+                                    <input id="regExperience" type="number" min="0" max="50" placeholder="Məs: 5" class="input-field bg-white">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Haqqınızda və xidmətlər</label>
+                                <textarea id="regAbout" rows="2" placeholder="Gördüyünüz işlər haqqında qısa məlumat yazın..."
+                                    class="w-full p-3 rounded-xl border border-[#DCE2DE] bg-white text-sm focus:outline-none focus:border-[#1F563D] transition"></textarea>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="btnRegister"
+                            class="w-full h-11 bg-[#1F563D] hover:bg-[#184430] text-white font-bold text-sm rounded-xl shadow-md shadow-[#1F563D]/15 transition-all flex items-center justify-center gap-2 mt-2">
+                            <span>Hesab yarat</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </form>
+
+                    <p class="text-center text-xs text-slate-500">
+                        Artıq hesabınız var?
+                        <button type="button" onclick="switchAuthMode('login')" class="font-bold text-[#1F563D] hover:underline ml-1">Daxil olun</button>
+                    </p>
                 </div>
-
-                <button type="submit" id="btnRegister"
-                    class="w-full h-12 bg-[#21664f] hover:bg-[#1a5240] text-white font-bold rounded-2xl shadow-lg shadow-[#21664f]/20 transition-all">
-                    Hesab yarat
-                </button>
-            </form>
             </div>
-        </main>
+        </div>
     </div>
 
     <!-- =========================================================
-         2. ƏSAS TƏTBİQ PANELİ (DASHBOARD SECTION)
+         2. ƏSAS TƏTBİQ PANELİ (DASHBOARD SECTION - FIGMA 03-08)
          ========================================================= -->
-    <div id="dashboardSection" class="hidden min-h-screen flex flex-col pb-20 sm:pb-8">
+    <div id="dashboardSection" class="hidden min-h-screen flex flex-col pb-20 sm:pb-10">
         
-        <!-- Üst Navbar -->
-        <header class="bg-canvas/90 backdrop-blur-md border-b border-slate-200 sticky top-0 z-30">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-                <div class="flex items-center gap-6">
-                    <a href="#" onclick="resetToHome(); return false;" class="flex items-center gap-2">
-                        <span class="text-2xl font-extrabold tracking-tight text-slate-900">usta<span class="text-[#21664f]">.</span></span>
-                        <span id="rolePill" class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#21664f]/10 text-[#21664f]"></span>
+        <!-- Üst Navbar (Figma Style) -->
+        <header class="bg-white/95 backdrop-blur-md border-b border-[#E6EAE7] sticky top-0 z-30">
+            <div class="max-w-6xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
+                <div class="flex items-center gap-8">
+                    <a href="#" onclick="resetToHome(); return false;" class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-[#1F563D] text-white flex items-center justify-center font-extrabold text-base">u</div>
+                        <span class="text-xl font-extrabold tracking-tight text-slate-900">usta<span class="text-[#1F563D]">.</span></span>
                     </a>
 
-                    <!-- Desktop Naviqasiya Tabları -->
-                    <nav id="desktopNav" class="hidden sm:flex items-center gap-1"></nav>
+                    <!-- Desktop Alt Xətli Naviqasiya Tabları -->
+                    <nav id="desktopNav" class="hidden sm:flex items-center gap-6 h-16"></nav>
                 </div>
 
                 <div class="flex items-center gap-3">
-                    <div onclick="switchTab('profile')" class="flex items-center gap-2.5 cursor-pointer hover:bg-slate-100 py-1.5 px-2.5 rounded-xl transition">
-                        <img id="navAvatar" src="" alt="Avatar" class="w-8 h-8 rounded-full object-cover border border-slate-200">
-                        <div class="hidden md:block text-left">
+                    <span id="rolePill" class="hidden md:inline-flex items-center text-[11px] font-bold px-3 py-1 rounded-full bg-[#EBF2EE] text-[#1F563D]"></span>
+
+                    <div onclick="switchTab('profile')" class="flex items-center gap-2.5 cursor-pointer hover:bg-slate-100/80 py-1 px-2.5 rounded-full transition">
+                        <img id="navAvatar" src="" alt="Avatar" class="w-8 h-8 rounded-full object-cover border border-[#DCE2DE]">
+                        <div class="hidden sm:block text-left">
                             <p id="navUserName" class="text-xs font-bold text-slate-900 leading-none"></p>
-                            <p id="navUserCity" class="text-[11px] text-slate-500 mt-0.5"></p>
+                            <p id="navUserCity" class="text-[10px] text-slate-500 mt-0.5"></p>
                         </div>
                     </div>
 
                     <button onclick="logout()" title="Çıxış"
-                        class="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-xl transition">
-                        <i data-lucide="log-out" class="w-5 h-5"></i>
+                        class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition">
+                        <i data-lucide="log-out" class="w-4 h-4"></i>
                     </button>
                 </div>
             </div>
         </header>
 
         <!-- Əsas Dinamik Məzmun -->
-        <main id="mainContent" class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 space-y-6">
+        <main id="mainContent" class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-8 py-6 sm:py-8 space-y-6">
             <!-- JS tərəfindən doldurulacaq -->
         </main>
 
         <!-- Mobil Alt Naviqasiya Barı -->
-        <nav id="mobileNav" class="sm:hidden fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 px-2 py-1.5 flex justify-around z-30"></nav>
+        <nav id="mobileNav" class="sm:hidden fixed bottom-0 inset-x-0 bg-white border-t border-[#E6EAE7] px-2 py-1.5 flex justify-around z-30"></nav>
     </div>
 
     <!-- =========================================================
-         3. MODALLAR (DETALLI PROFİL, SİFARİŞ, CHAT, REYTİNQ, CAVAB)
+         3. MODALLAR (SİFARİŞ, QİYMƏT, REYTİNQ, CAVAB, CHAT)
          ========================================================= -->
-
-    <!-- MODAL A: Detallı Usta Profili və Portfolio -->
-    <div id="masterProfileModal" class="modal-backdrop hidden">
-        <div class="modal-card max-w-2xl max-h-[90vh] flex flex-col">
-            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
-                <h3 class="font-bold text-lg text-slate-900">Usta Profili və Portfolio</h3>
-                <button onclick="closeModal('masterProfileModal')" class="modal-close-btn">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            <div id="masterProfileBody" class="p-6 overflow-y-auto space-y-6"></div>
-        </div>
-    </div>
 
     <!-- MODAL B: Yeni Sifariş Yaratmaq -->
     <div id="createOrderModal" class="modal-backdrop hidden">
         <div class="modal-card max-w-md">
-            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+            <div class="px-6 py-4 border-b border-[#E6EAE7] flex items-center justify-between">
                 <div>
                     <h3 class="font-bold text-lg text-slate-900">Yeni Sifariş</h3>
-                    <p id="orderTargetMasterName" class="text-xs font-semibold text-[#21664f]"></p>
+                    <p id="orderTargetMasterName" class="text-xs font-semibold text-[#1F563D]"></p>
                 </div>
                 <button onclick="closeModal('createOrderModal')" class="modal-close-btn">
                     <i data-lucide="x" class="w-5 h-5"></i>
@@ -252,10 +290,10 @@
             <form onsubmit="submitOrder(event)" class="p-6 space-y-4">
                 <input type="hidden" id="orderMasterId">
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Problemin və ya işin təsviri *</label>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Nə işdə kömək lazımdır? *</label>
                     <textarea id="orderDescription" rows="3" required
                         placeholder="Məs: Mətbəx kranı su buraxır, dəyişdirilməlidir..."
-                        class="w-full p-3.5 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-[#21664f]"></textarea>
+                        class="w-full p-3.5 rounded-xl border border-[#DCE2DE] text-sm focus:outline-none focus:border-[#1F563D]"></textarea>
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1.5">Ünvanınız *</label>
@@ -264,7 +302,7 @@
                         class="input-field">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Uyğun vaxt (istəyə bağlı)</label>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Uyğun vaxt</label>
                     <select id="orderUrgency" class="input-field bg-white">
                         <option value="Bu gün təcili">Bu gün təcili</option>
                         <option value="Sabah gün ərzində">Sabah gün ərzində</option>
@@ -273,10 +311,10 @@
                     </select>
                 </div>
                 <div class="flex gap-3 pt-2">
-                    <button type="button" onclick="closeModal('createOrderModal')" class="flex-1 h-11 rounded-xl border border-slate-200 font-bold text-sm text-slate-600 hover:bg-slate-50">
+                    <button type="button" onclick="closeModal('createOrderModal')" class="flex-1 h-11 rounded-xl border border-[#DCE2DE] font-bold text-sm text-slate-600 hover:bg-slate-50">
                         Ləğv et
                     </button>
-                    <button type="submit" id="btnSubmitOrder" class="flex-1 h-11 rounded-xl bg-[#21664f] hover:bg-[#1a5240] text-white font-bold text-sm">
+                    <button type="submit" id="btnSubmitOrder" class="flex-1 h-11 rounded-xl bg-[#1F563D] hover:bg-[#184430] text-white font-bold text-sm">
                         Sifarişi Göndər
                     </button>
                 </div>
@@ -287,7 +325,7 @@
     <!-- MODAL C: Usta Sifarişi Qəbul Edir və Qiymət Yazır -->
     <div id="acceptOrderModal" class="modal-backdrop hidden">
         <div class="modal-card max-w-sm">
-            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+            <div class="px-6 py-4 border-b border-[#E6EAE7] flex items-center justify-between">
                 <h3 class="font-bold text-lg text-slate-900">Sifarişi Qəbul Et</h3>
                 <button onclick="closeModal('acceptOrderModal')" class="modal-close-btn">
                     <i data-lucide="x" class="w-5 h-5"></i>
@@ -302,10 +340,10 @@
                     <p class="text-[11px] text-slate-400 mt-1">Qiymət müştərinin ekranında görünəcək.</p>
                 </div>
                 <div class="flex gap-3 pt-2">
-                    <button type="button" onclick="closeModal('acceptOrderModal')" class="flex-1 h-11 rounded-xl border border-slate-200 font-bold text-sm text-slate-600">
+                    <button type="button" onclick="closeModal('acceptOrderModal')" class="flex-1 h-11 rounded-xl border border-[#DCE2DE] font-bold text-sm text-slate-600">
                         Bağla
                     </button>
-                    <button type="submit" class="flex-1 h-11 rounded-xl bg-[#21664f] text-white font-bold text-sm">
+                    <button type="submit" class="flex-1 h-11 rounded-xl bg-[#1F563D] text-white font-bold text-sm">
                         Təsdiqlə
                     </button>
                 </div>
@@ -316,7 +354,7 @@
     <!-- MODAL D: Müştəri Ulduz və Rəy Verir -->
     <div id="rateOrderModal" class="modal-backdrop hidden">
         <div class="modal-card max-w-md">
-            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+            <div class="px-6 py-4 border-b border-[#E6EAE7] flex items-center justify-between">
                 <h3 class="font-bold text-lg text-slate-900">Xidməti Qiymətləndirin</h3>
                 <button onclick="closeModal('rateOrderModal')" class="modal-close-btn">
                     <i data-lucide="x" class="w-5 h-5"></i>
@@ -328,18 +366,16 @@
 
                 <div class="text-center py-2">
                     <p class="text-xs font-bold text-slate-500 mb-2">Ustanın işinə neçə ulduz verirsiniz?</p>
-                    <div id="starSelector" class="flex justify-center gap-2">
-                        <!-- JS ilə 5 ulduz yaranacaq -->
-                    </div>
+                    <div id="starSelector" class="flex justify-center gap-2"></div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Rəyiniz (digər müştərilər üçün faydalıdır)</label>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Rəyiniz</label>
                     <textarea id="rateReviewText" rows="3" placeholder="Usta vaxtında gəldi, işini səliqəli gördü..."
-                        class="w-full p-3.5 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-[#21664f]"></textarea>
+                        class="w-full p-3.5 rounded-xl border border-[#DCE2DE] text-sm focus:outline-none focus:border-[#1F563D]"></textarea>
                 </div>
 
-                <button type="submit" class="w-full h-11 rounded-xl bg-[#21664f] hover:bg-[#1a5240] text-white font-bold text-sm">
+                <button type="submit" class="w-full h-11 rounded-xl bg-[#1F563D] hover:bg-[#184430] text-white font-bold text-sm">
                     Rəyi Göndər
                 </button>
             </form>
@@ -349,7 +385,7 @@
     <!-- MODAL E: Usta Rəyə Geri Dönüş (Cavab) Yazır -->
     <div id="replyReviewModal" class="modal-backdrop hidden">
         <div class="modal-card max-w-md">
-            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+            <div class="px-6 py-4 border-b border-[#E6EAE7] flex items-center justify-between">
                 <h3 class="font-bold text-lg text-slate-900">Rəyə Cavab Yaz</h3>
                 <button onclick="closeModal('replyReviewModal')" class="modal-close-btn">
                     <i data-lucide="x" class="w-5 h-5"></i>
@@ -357,59 +393,70 @@
             </div>
             <form onsubmit="submitReply(event)" class="p-6 space-y-4">
                 <input type="hidden" id="replyOrderId">
-                <div id="replyCustomerQuote" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 italic"></div>
+                <div id="replyCustomerQuote" class="p-3.5 rounded-xl bg-[#FAFBF9] border border-[#E6EAE7] text-xs text-slate-600 italic"></div>
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1.5">Sizin cavabınız *</label>
                     <textarea id="replyText" rows="3" required placeholder="Təşəkkür edirik, xoş günlərdə istifadə edin!"
-                        class="w-full p-3.5 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-[#21664f]"></textarea>
+                        class="w-full p-3.5 rounded-xl border border-[#DCE2DE] text-sm focus:outline-none focus:border-[#1F563D]"></textarea>
                 </div>
-                <button type="submit" class="w-full h-11 rounded-xl bg-[#21664f] text-white font-bold text-sm">
+                <button type="submit" class="w-full h-11 rounded-xl bg-[#1F563D] text-white font-bold text-sm">
                     Cavabı Paylaş
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- MODAL F: Sifariş Daxili Canlı Chat -->
+    <!-- MODAL F: Sifariş Daxili Canlı Chat (FIGMA 07) -->
     <div id="chatModal" class="modal-backdrop hidden">
-        <div class="modal-card max-w-lg h-[85vh] flex flex-col overflow-hidden">
+        <div class="modal-card max-w-lg h-[86vh] flex flex-col overflow-hidden">
             <!-- Chat Başlıq -->
-            <div class="px-5 py-4 bg-white border-b border-slate-100 flex items-center justify-between">
+            <div class="px-5 py-3.5 bg-white border-b border-[#E6EAE7] flex items-center justify-between">
                 <div class="flex items-center gap-3 min-w-0">
-                    <div class="w-10 h-10 rounded-full bg-[#21664f]/10 text-[#21664f] flex items-center justify-center shrink-0">
-                        <i data-lucide="message-square" class="w-5 h-5"></i>
-                    </div>
+                    <img id="chatHeaderAvatar" src="" alt="" class="w-10 h-10 rounded-full object-cover border border-[#DCE2DE] shrink-0">
                     <div class="min-w-0">
                         <h3 id="chatHeaderTitle" class="font-bold text-sm text-slate-900 truncate">Sifariş Yazışması</h3>
-                        <p id="chatHeaderSub" class="text-xs text-slate-500 truncate"></p>
+                        <p class="text-[11px] text-[#1F563D] font-semibold flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            <span>Aktiv yazışma</span>
+                        </p>
                     </div>
                 </div>
-                <button onclick="closeChat()" class="modal-close-btn">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
+                <div class="flex items-center gap-1">
+                    <a id="chatCallLink" href="#" class="hidden modal-close-btn" title="Zəng et">
+                        <i data-lucide="phone" class="w-4 h-4"></i>
+                    </a>
+                    <button onclick="closeChat()" class="modal-close-btn">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sifariş Xülasə Zolağı -->
+            <div class="px-5 py-2.5 bg-[#EBF2EE] border-b border-[#DCE4DF] flex items-center justify-between gap-2">
+                <p id="chatHeaderSub" class="text-xs font-bold text-slate-800 truncate"></p>
+                <span id="chatOrderBadge" class="shrink-0 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-white text-[#1F563D]">Sifariş</span>
             </div>
 
             <!-- Mesajlar Siyahısı -->
-            <div id="chatMessagesContainer" class="flex-1 p-4 overflow-y-auto space-y-3 bg-[#eef1ee]"></div>
+            <div id="chatMessagesContainer" class="flex-1 p-4 overflow-y-auto space-y-3 bg-[#FAFBF9]"></div>
 
             <!-- Mesaj Yazma Paneli -->
-            <div class="p-3 bg-white border-t border-slate-200 flex items-center gap-2">
-                <label id="chatUploadBtn" class="cursor-pointer w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center shrink-0 transition" title="Şəkil göndər">
-                    <i data-lucide="image-plus" class="w-5 h-5"></i>
+            <div class="p-3 bg-white border-t border-[#E6EAE7] flex items-center gap-2">
+                <label id="chatUploadBtn" class="cursor-pointer w-10 h-10 rounded-xl hover:bg-slate-100 text-slate-500 hover:text-[#1F563D] flex items-center justify-center shrink-0 transition" title="Şəkil göndər">
+                    <i data-lucide="image" class="w-5 h-5"></i>
                     <input type="file" id="chatImageInput" accept="image/*" class="hidden" onchange="handleChatImageUpload(this)">
                 </label>
                 <button type="button" onclick="sendChatLocation()" title="Konum göndər"
-                    class="p-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-[#21664f] transition cursor-pointer shrink-0">
+                    class="w-10 h-10 rounded-xl hover:bg-slate-100 text-slate-500 hover:text-[#1F563D] flex items-center justify-center transition cursor-pointer shrink-0">
                     <i data-lucide="map-pin" class="w-5 h-5"></i>
                 </button>
                 <input id="chatMessageInput" type="text" placeholder="Mesajınızı yazın..."
                     onkeypress="if(event.key === 'Enter') sendChatMessage()"
-                    class="flex-1 h-10 px-4 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#21664f]">
+                    class="flex-1 h-10 px-3.5 rounded-xl border border-[#DCE2DE] bg-[#FAFBF9] text-sm focus:outline-none focus:border-[#1F563D] focus:bg-white">
 
-                <button onclick="sendChatMessage()"
-                    class="h-10 px-4 rounded-xl bg-[#21664f] hover:bg-[#1a5240] text-white font-bold text-sm flex items-center gap-1.5 shrink-0 transition">
-                    <span>Göndər</span>
-                    <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                <button onclick="sendChatMessage()" title="Göndər"
+                    class="w-10 h-10 rounded-xl bg-[#1F563D] hover:bg-[#184430] text-white flex items-center justify-center shrink-0 transition">
+                    <i data-lucide="send" class="w-4 h-4"></i>
                 </button>
             </div>
         </div>

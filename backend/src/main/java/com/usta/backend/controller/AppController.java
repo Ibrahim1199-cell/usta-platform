@@ -154,7 +154,6 @@ public class AppController {
             if (updated.getAbout() != null) user.setAbout(updated.getAbout());
             if (updated.getAvatarUrl() != null) user.setAvatarUrl(updated.getAvatarUrl());
             if (updated.getPortfolioUrls() != null) user.setPortfolioUrls(updated.getPortfolioUrls());
-            if (updated.getAvailable() != null) user.setAvailable(updated.getAvailable());
             return ResponseEntity.ok(userRepository.save(user));
         }).orElse(ResponseEntity.notFound().build());
     }

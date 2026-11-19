@@ -36,11 +36,6 @@ public class User {
     @Column(columnDefinition = "TEXT")
     private String portfolioUrls;
 
-    @Column(length = 1000)
-    private String imageUrl;
-
-    private Boolean available = true;
-
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -79,10 +74,4 @@ public class User {
 
     public String getPortfolioUrls() { return portfolioUrls; }
     public void setPortfolioUrls(String portfolioUrls) { this.portfolioUrls = portfolioUrls; }
-
-    public Boolean getAvailable() { return available != null ? available : true; }
-    public void setAvailable(Boolean available) { this.available = available; }
-
-    public String getImageUrl() { return imageUrl; }
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }

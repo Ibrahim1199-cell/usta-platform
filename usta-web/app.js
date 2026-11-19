@@ -64,7 +64,7 @@ function showToast(message, type = "success") {
     const styles = {
         success: "bg-slate-900 text-white border-slate-800",
         error: "bg-red-600 text-white border-red-700",
-        info: "bg-[#2D5A3C] text-white border-[#22452E]"
+        info: "bg-[#21664f] text-white border-[#1a5240]"
     };
 
     const icons = {
@@ -113,7 +113,7 @@ function openLightbox(url) {
 function getAvatarUrl(user) {
     if (user && user.avatarUrl) return user.avatarUrl;
     const name = user && user.fullName ? user.fullName : "Usta";
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=2D5A3C&color=fff&bold=true`;
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=21664f&color=fff&bold=true`;
 }
 
 function escapeHtml(str) {
@@ -354,14 +354,14 @@ function switchTab(tabId) {
     document.querySelectorAll(".nav-btn").forEach(btn => {
         const active = btn.dataset.tab === tabId;
         btn.className = active
-            ? "nav-btn px-3.5 py-2 rounded-xl text-sm font-bold flex items-center gap-2 bg-[#2D5A3C]/10 text-[#2D5A3C] transition"
+            ? "nav-btn px-3.5 py-2 rounded-xl text-sm font-bold flex items-center gap-2 bg-[#21664f]/10 text-[#21664f] transition"
             : "nav-btn px-3.5 py-2 rounded-xl text-sm font-bold flex items-center gap-2 text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition";
     });
 
     document.querySelectorAll(".mobile-nav-btn").forEach(btn => {
         const active = btn.dataset.tab === tabId;
         btn.className = active
-            ? "mobile-nav-btn flex-1 py-1.5 flex flex-col items-center justify-center gap-1 rounded-xl text-[11px] font-bold text-[#2D5A3C] bg-[#2D5A3C]/10 transition"
+            ? "mobile-nav-btn flex-1 py-1.5 flex flex-col items-center justify-center gap-1 rounded-xl text-[11px] font-bold text-[#21664f] bg-[#21664f]/10 transition"
             : "mobile-nav-btn flex-1 py-1.5 flex flex-col items-center justify-center gap-1 rounded-xl text-[11px] font-bold text-slate-400 transition";
     });
 
@@ -377,10 +377,10 @@ function switchTab(tabId) {
 async function loadMastersView() {
     const main = document.getElementById("mainContent");
     main.innerHTML = `
-        <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-sm space-y-4">
+        <div class="hero-card p-6 sm:p-9 rounded-3xl space-y-6">
             <div>
-                <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">Peşəkar usta tapın</h2>
-                <p class="text-xs sm:text-sm text-slate-500">Yoxlanılmış ustalar, real müştəri rəyləri və şəffaf qiymətlər.</p>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white max-w-xl leading-tight">Peşəkar usta tapın</h2>
+                <p class="text-sm sm:text-base text-white/70 mt-2 max-w-lg">Yoxlanılmış ustalar, real müştəri rəyləri və şəffaf qiymətlər.</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -409,7 +409,7 @@ async function loadMastersView() {
             </div>
         </div>
 
-        <div id="mastersGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div id="mastersGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             ${renderSkeletonCards(4)}
         </div>
     `;
@@ -472,7 +472,7 @@ function applyMasterFilters() {
     grid.innerHTML = filtered.map(m => {
         const photos = m.portfolioUrls ? m.portfolioUrls.split("||").filter(Boolean) : [];
         return `
-            <div class="bg-white p-5 rounded-3xl border border-slate-200/90 hover:border-[#2D5A3C]/40 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+            <div class="bg-white p-5 rounded-3xl border border-slate-200/90 hover:border-[#21664f]/40 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
                 <div>
                     <div class="flex items-start gap-3.5">
                         <img src="${getAvatarUrl(m)}" onclick="openMasterProfile(${m.id})"
@@ -480,7 +480,7 @@ function applyMasterFilters() {
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center justify-between gap-2">
                                 <h3 onclick="openMasterProfile(${m.id})"
-                                    class="font-bold text-base text-slate-900 hover:text-[#2D5A3C] cursor-pointer truncate">
+                                    class="font-bold text-base text-slate-900 hover:text-[#21664f] cursor-pointer truncate">
                                     ${escapeHtml(m.fullName)}
                                 </h3>
                                 <span class="shrink-0 inline-flex items-center gap-1 text-xs font-extrabold bg-amber-50 text-amber-700 border border-amber-200/70 px-2.5 py-1 rounded-xl">
@@ -489,7 +489,7 @@ function applyMasterFilters() {
                                     <span class="text-[10px] font-semibold text-amber-600/80">(${m.ratingCount || 0})</span>
                                 </span>
                             </div>
-                            <p class="text-xs font-bold text-[#2D5A3C] mt-0.5">${escapeHtml(m.category || "Usta")}</p>
+                            <p class="text-xs font-bold text-[#21664f] mt-0.5">${escapeHtml(m.category || "Usta")}</p>
                             <div class="flex items-center gap-3 text-[11px] text-slate-500 mt-1.5">
                                 <span class="inline-flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> ${escapeHtml(m.city || "Bakı")}</span>
                                 <span class="inline-flex items-center gap-1"><i data-lucide="briefcase" class="w-3 h-3"></i> ${m.experience || 0} il təcrübə</span>
@@ -523,7 +523,7 @@ function applyMasterFilters() {
                         Profil & Rəylər
                     </button>
                     <button onclick="openCreateOrderModal(${m.id})"
-                        class="flex-1 h-10 rounded-xl bg-[#2D5A3C] hover:bg-[#22452E] text-white text-xs font-bold shadow-sm transition">
+                        class="flex-1 h-10 rounded-xl bg-[#21664f] hover:bg-[#1a5240] text-white text-xs font-bold shadow-sm transition">
                         Sifariş Ver
                     </button>
                     <a href="tel:${escapeHtml(m.phone)}" title="Zəng et"
@@ -577,7 +577,7 @@ async function openMasterProfile(masterId) {
                 <img src="${getAvatarUrl(master)}" class="w-16 h-16 rounded-2xl object-cover border border-slate-200">
                 <div>
                     <h4 class="font-extrabold text-lg text-slate-900">${escapeHtml(master.fullName)}</h4>
-                    <p class="text-xs font-bold text-[#2D5A3C]">${escapeHtml(master.category || "Usta")} • ${escapeHtml(master.city || "")}</p>
+                    <p class="text-xs font-bold text-[#21664f]">${escapeHtml(master.category || "Usta")} • ${escapeHtml(master.city || "")}</p>
                     <div class="flex items-center gap-3 text-xs text-slate-600 mt-1">
                         <span>⭐ <b>${master.rating > 0 ? master.rating.toFixed(1) : "Yeni"}</b> (${master.ratingCount || 0} rəy)</span>
                         <span>•</span>
@@ -590,19 +590,19 @@ async function openMasterProfile(masterId) {
                     <i data-lucide="phone" class="w-3.5 h-3.5"></i> Zəng
                 </a>
                 <button onclick="closeModal('masterProfileModal'); openCreateOrderModal(${master.id})"
-                    class="px-4 h-10 rounded-xl bg-[#2D5A3C] text-white text-xs font-bold">
+                    class="px-4 h-10 rounded-xl bg-[#21664f] text-white text-xs font-bold">
                     Sifariş Ver
                 </button>
             </div>
         </div>
 
         <div>
-            <h5 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-1.5">Haqqında</h5>
+            <h5 class="text-sm font-bold text-slate-600 mb-1.5">Haqqında</h5>
             <p class="text-sm text-slate-700 leading-relaxed">${escapeHtml(master.about || "Məlumat əlavə edilməyib.")}</p>
         </div>
 
         <div>
-            <h5 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-2">Gördüyü İşlər (${photos.length})</h5>
+            <h5 class="text-sm font-bold text-slate-600 mb-2">Gördüyü İşlər (${photos.length})</h5>
             ${photos.length > 0 ? `
                 <div class="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
                     ${photos.map(url => `
@@ -614,7 +614,7 @@ async function openMasterProfile(masterId) {
         </div>
 
         <div>
-            <h5 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-2">Müştəri Rəyləri (${reviews.length})</h5>
+            <h5 class="text-sm font-bold text-slate-600 mb-2">Müştəri Rəyləri (${reviews.length})</h5>
             <div class="space-y-3">
                 ${reviews.length > 0 ? reviews.map(r => `
                     <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-2">
@@ -626,8 +626,8 @@ async function openMasterProfile(masterId) {
                         </div>
                         <p class="text-sm text-slate-800">${escapeHtml(r.review || "Rəy mətni qeyd edilməyib.")}</p>
                         ${r.masterReply ? `
-                            <div class="mt-2 pl-3 py-1.5 border-l-2 border-[#2D5A3C] bg-white rounded-r-xl text-xs text-slate-700">
-                                <span class="font-bold text-[#2D5A3C]">↳ Ustanın cavabı:</span> ${escapeHtml(r.masterReply)}
+                            <div class="mt-2 pl-3 py-1.5 border-l-2 border-[#21664f] bg-white rounded-r-xl text-xs text-slate-700">
+                                <span class="font-bold text-[#21664f]">↳ Ustanın cavabı:</span> ${escapeHtml(r.masterReply)}
                             </div>
                         ` : ""}
                     </div>
@@ -717,7 +717,7 @@ async function loadCustomerOrdersView() {
             <div class="bg-white p-10 rounded-3xl border border-slate-200 text-center space-y-3">
                 <i data-lucide="clipboard" class="w-10 h-10 text-slate-300 mx-auto"></i>
                 <p class="font-bold text-slate-800">Hələ ki, sifarişiniz yoxdur</p>
-                <button onclick="switchTab('masters')" class="px-5 py-2.5 rounded-xl bg-[#2D5A3C] text-white text-xs font-bold">
+                <button onclick="switchTab('masters')" class="px-5 py-2.5 rounded-xl bg-[#21664f] text-white text-xs font-bold">
                     Usta Axtar
                 </button>
             </div>
@@ -737,7 +737,7 @@ async function loadCustomerOrdersView() {
                         ${getStatusBadge(o.status)}
                         <span class="text-xs font-bold text-slate-500">${escapeHtml(masterTitle)}</span>
                     </div>
-                    <span class="text-sm font-extrabold text-[#2D5A3C]">
+                    <span class="text-sm font-extrabold text-[#21664f]">
                         ${o.price ? `${o.price} AZN` : "Qiymət gözlənilir"}
                     </span>
                 </div>
@@ -781,8 +781,8 @@ async function loadCustomerOrdersView() {
                         <div class="font-bold text-amber-600">Sizin qiymətiniz: ${"★".repeat(o.rating)} (${o.rating}/5)</div>
                         ${o.review ? `<p class="text-slate-700">${escapeHtml(o.review)}</p>` : ""}
                         ${o.masterReply ? `
-                            <div class="pl-3 py-1 border-l-2 border-[#2D5A3C] text-slate-700 mt-1">
-                                <span class="font-bold text-[#2D5A3C]">↳ Ustanın cavabı:</span> ${escapeHtml(o.masterReply)}
+                            <div class="pl-3 py-1 border-l-2 border-[#21664f] text-slate-700 mt-1">
+                                <span class="font-bold text-[#21664f]">↳ Ustanın cavabı:</span> ${escapeHtml(o.masterReply)}
                             </div>
                         ` : ""}
                     </div>
@@ -868,20 +868,20 @@ async function loadMasterOrdersView() {
 
     document.getElementById("masterStatsRow").innerHTML = `
         <div class="bg-white p-4 rounded-2xl border border-slate-200">
-            <p class="text-[11px] font-bold text-slate-400 uppercase">Yeni Gözləyən</p>
+            <p class="text-xs font-semibold text-slate-500">Yeni Gözləyən</p>
             <p class="text-2xl font-extrabold text-amber-600 mt-1">${pendingCount}</p>
         </div>
         <div class="bg-white p-4 rounded-2xl border border-slate-200">
-            <p class="text-[11px] font-bold text-slate-400 uppercase">İcrada Olan</p>
+            <p class="text-xs font-semibold text-slate-500">İcrada Olan</p>
             <p class="text-2xl font-extrabold text-blue-600 mt-1">${activeCount}</p>
         </div>
         <div class="bg-white p-4 rounded-2xl border border-slate-200">
-            <p class="text-[11px] font-bold text-slate-400 uppercase">Tamamlanmış</p>
+            <p class="text-xs font-semibold text-slate-500">Tamamlanmış</p>
             <p class="text-2xl font-extrabold text-slate-900 mt-1">${completedOrders.length}</p>
         </div>
         <div class="bg-white p-4 rounded-2xl border border-slate-200">
-            <p class="text-[11px] font-bold text-slate-400 uppercase">Ümumi Qazanc</p>
-            <p class="text-2xl font-extrabold text-[#2D5A3C] mt-1">${totalEarned} ₼</p>
+            <p class="text-xs font-semibold text-slate-500">Ümumi Qazanc</p>
+            <p class="text-2xl font-extrabold text-[#21664f] mt-1">${totalEarned} ₼</p>
         </div>
     `;
 
@@ -901,7 +901,7 @@ async function loadMasterOrdersView() {
         <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-3">
             <div class="flex items-center justify-between">
                 ${getStatusBadge(o.status)}
-                <span class="text-sm font-extrabold text-[#2D5A3C]">
+                <span class="text-sm font-extrabold text-[#21664f]">
                     ${o.price ? `${o.price} AZN` : "Qiymət təyin edilməyib"}
                 </span>
             </div>
@@ -921,7 +921,7 @@ async function loadMasterOrdersView() {
 
                 ${o.status === "GOZLEMEDE" ? `
                     <button onclick="openAcceptOrderModal(${o.id})"
-                        class="flex-1 h-9 rounded-xl bg-[#2D5A3C] hover:bg-[#22452E] text-white text-xs font-bold">
+                        class="flex-1 h-9 rounded-xl bg-[#21664f] hover:bg-[#1a5240] text-white text-xs font-bold">
                         Qəbul Et & Qiymət Yaz
                     </button>
                     <button onclick="rejectOrderByMaster(${o.id})"
@@ -932,7 +932,7 @@ async function loadMasterOrdersView() {
 
                 ${o.status === "QEBUL_EDILDI" ? `
                     <button onclick="completeOrderByMaster(${o.id})"
-                        class="flex-1 h-9 rounded-xl bg-[#2D5A3C] hover:bg-[#22452E] text-white text-xs font-bold flex items-center justify-center gap-1.5">
+                        class="flex-1 h-9 rounded-xl bg-[#21664f] hover:bg-[#1a5240] text-white text-xs font-bold flex items-center justify-center gap-1.5">
                         <i data-lucide="check" class="w-4 h-4"></i> İşi Tamamla
                     </button>
                 ` : ""}
@@ -1014,12 +1014,12 @@ async function loadProfileView() {
                             </div>
                             <p class="text-sm text-slate-800">${escapeHtml(r.review || "Rəy mətni yazılmayıb.")}</p>
                             ${r.masterReply ? `
-                                <div class="pl-3 py-1.5 border-l-2 border-[#2D5A3C] bg-white rounded-r-xl text-xs text-slate-700">
-                                    <span class="font-bold text-[#2D5A3C]">Sizin cavabınız:</span> ${escapeHtml(r.masterReply)}
+                                <div class="pl-3 py-1.5 border-l-2 border-[#21664f] bg-white rounded-r-xl text-xs text-slate-700">
+                                    <span class="font-bold text-[#21664f]">Sizin cavabınız:</span> ${escapeHtml(r.masterReply)}
                                 </div>
                             ` : `
                                 <button onclick="openReplyModal(${r.id}, '${escapeHtml(r.review || "Müştəri ulduz verdi")}')"
-                                    class="text-xs font-bold text-[#2D5A3C] hover:underline flex items-center gap-1 pt-1">
+                                    class="text-xs font-bold text-[#21664f] hover:underline flex items-center gap-1 pt-1">
                                     <i data-lucide="corner-down-right" class="w-3.5 h-3.5"></i> Bu rəyə cavab yaz
                                 </button>
                             `}
@@ -1036,7 +1036,7 @@ async function loadProfileView() {
                 <div class="flex items-center gap-4 pb-4 border-b border-slate-100">
                     <div class="relative">
                         <img src="${getAvatarUrl(currentUser)}" class="w-20 h-20 rounded-2xl object-cover border border-slate-200">
-                        <label class="cursor-pointer absolute -bottom-2 -right-2 w-8 h-8 rounded-xl bg-[#2D5A3C] text-white flex items-center justify-center shadow-md hover:bg-[#22452E] transition" title="Şəkli dəyiş">
+                        <label class="cursor-pointer absolute -bottom-2 -right-2 w-8 h-8 rounded-xl bg-[#21664f] text-white flex items-center justify-center shadow-md hover:bg-[#1a5240] transition" title="Şəkli dəyiş">
                             <i data-lucide="camera" class="w-4 h-4"></i>
                             <input type="file" accept="image/*" class="hidden" onchange="handleAvatarUpload(this)">
                         </label>
@@ -1050,7 +1050,7 @@ async function loadProfileView() {
                     <div>
                         <h2 class="font-extrabold text-lg text-slate-900">${escapeHtml(currentUser.fullName)}</h2>
                         <p class="text-xs font-semibold text-slate-500">${escapeHtml(currentUser.phone)}</p>
-                        <span class="inline-block mt-1 text-[11px] font-bold px-2.5 py-0.5 rounded-md bg-[#2D5A3C]/10 text-[#2D5A3C]">
+                        <span class="inline-block mt-1 text-[11px] font-bold px-2.5 py-0.5 rounded-md bg-[#21664f]/10 text-[#21664f]">
                             ${isMaster ? escapeHtml(currentUser.category || "Usta") : "Müştəri Hesabı"}
                         </span>
                     </div>
@@ -1086,11 +1086,11 @@ async function loadProfileView() {
 
                         <div>
                             <label class="block text-xs font-bold text-slate-700 mb-1">Haqqınızda və Xidmətlər</label>
-                            <textarea id="profAbout" rows="3" class="w-full p-3.5 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-[#2D5A3C]">${escapeHtml(currentUser.about || "")}</textarea>
+                            <textarea id="profAbout" rows="3" class="w-full p-3.5 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-[#21664f]">${escapeHtml(currentUser.about || "")}</textarea>
                         </div>
                     ` : ""}
 
-                    <button type="submit" class="px-6 h-11 rounded-xl bg-[#2D5A3C] hover:bg-[#22452E] text-white font-bold text-sm transition">
+                    <button type="submit" class="px-6 h-11 rounded-xl bg-[#21664f] hover:bg-[#1a5240] text-white font-bold text-sm transition">
                         Dəyişiklikləri Yadda Saxla
                     </button>
                 </form>
@@ -1103,7 +1103,7 @@ async function loadProfileView() {
                             <h3 class="font-extrabold text-base text-slate-900">İş Portfoliom</h3>
                             <p class="text-xs text-slate-500">Gördüyünüz işlərin şəkilləri</p>
                         </div>
-                        <label class="cursor-pointer px-3 py-2 rounded-xl bg-[#2D5A3C] hover:bg-[#22452E] text-white text-xs font-bold flex items-center gap-1 transition">
+                        <label class="cursor-pointer px-3 py-2 rounded-xl bg-[#21664f] hover:bg-[#1a5240] text-white text-xs font-bold flex items-center gap-1 transition">
                             <i data-lucide="plus" class="w-4 h-4"></i> Əlavə et
                             <input type="file" accept="image/*" class="hidden" onchange="handlePortfolioUpload(this)">
                         </label>
@@ -1309,7 +1309,7 @@ async function fetchChatMessages(scrollToBottom = false) {
                     <span class="text-[10px] font-semibold text-slate-400 mb-1 px-1">${escapeHtml(m.senderName)}</span>
                     <div class="max-w-[78%] px-3.5 py-2.5 rounded-2xl text-sm shadow-sm ${
                         isMe
-                            ? "bg-[#2D5A3C] text-white rounded-br-sm"
+                            ? "bg-[#21664f] text-white rounded-br-sm"
                             : "bg-white text-slate-800 border border-slate-200/80 rounded-bl-sm"
                     }">
                         ${m.imageUrl ? `

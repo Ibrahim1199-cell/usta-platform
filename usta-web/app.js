@@ -1147,7 +1147,21 @@ async function handleAvatarUpload(input) {
         showToast(err.message, "error");
     }
 }
-
+async function deleteAvatar() {
+  try {
+    showToast("Profil şəkli silinir...", "info");
+    const res = await fetch(`${BASE_URL}/api/users/${currentUser.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ avatarUrl: "" })
+    });
+    if (!res.ok) throw new Error("Profil şəkli silinmədi.");
+    showToast("Profil şəkli silindi!", "success");
+    loadProfileView();
+  } catch (err) {
+    showToast(err.message, "error");
+  }
+}
 async function handlePortfolioUpload(input) {
     if (!input.files[0]) return;
     try {

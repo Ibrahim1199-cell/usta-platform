@@ -1040,6 +1040,12 @@ async function loadProfileView() {
                             <i data-lucide="camera" class="w-4 h-4"></i>
                             <input type="file" accept="image/*" class="hidden" onchange="handleAvatarUpload(this)">
                         </label>
+                        ${currentUser.avatarUrl ? `
+                            <button type="button" onclick="deleteAvatar()" title="Profil şəklini sil"
+                                class="absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full bg-red-600 text-white border-2 border-white flex items-center justify-center hover:bg-red-700 cursor-pointer shadow-sm">
+                                    <i data-lucide="trash-2" class="w-3 h-3"></i>
+                                        </button>
+                                            ` : ""}
                     </div>
                     <div>
                         <h2 class="font-extrabold text-lg text-slate-900">${escapeHtml(currentUser.fullName)}</h2>

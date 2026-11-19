@@ -1316,12 +1316,18 @@ async function fetchChatMessages(scrollToBottom = false) {
                             <img src="${m.imageUrl}" onclick="openLightbox('${m.imageUrl}')"
                                 class="max-h-52 rounded-xl mb-1.5 cursor-zoom-in object-cover">
                         ` : ""}
-                        ${m.text ? `<p class="leading-relaxed break-words">${escapeHtml(m.text)}</p>` : ""}
+                        ${m.text && m.text.startsWith("[LOCATION]") ? `
+                                <a href="${escapeHtml(m.text.replace("[LOCATION]", ""))}" target="_blank" rel="noopener noreferrer"
+                                class="flex items-center gap-2 p-2 rounded-xl ${isMe ? "bg-white/15 hover:bg-white/25 text-white" : "bg-slate-100 hover:bg-slate-200 text-slate-800"} transition font-semibold text-xs">
+                                <i data-lucide="map-pin" class="w-4 h-4 shrink-0"></i>
+                                <span>📍 Göndərilən Konum (Xəritədə bax)</span>
+                                </a>
+                        ` : (m.text ? `<p class="leading-relaxed break-words">${escapeHtml(m.text)}</p>` : "")}
                     </div>
                 </div>
             `;
         }).join("");
-
+        lucide.createIcons();
         if (scrollToBottom || isNearBottom) {
             box.scrollTop = box.scrollHeight;
         }
@@ -1373,8 +1379,46 @@ async function handleChatImageUpload(input) {
         });
         if (!res.ok) throw new Error("Şəkil linki mesaja əlavə edilmədi.");
         input.value = "";
+        lucide.createIcons();
         fetchChatMessages(true);
     } catch (err) {
         showToast(err.message, "error");
     }
+}
+function sendChatLocation() {
+  if (!activeChatOrderId || !currentUser) return;
+  if (!navigator.geolocation) {
+    showToast("Brauzeriniz konum xidmətini dəstəkləmir.", "error");
+    return;
+  }
+
+  showToast("Konum müəyyən edilir...", "info");
+
+  navigator.geolocation.getCurrentPosition(
+    async (pos) => {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      const mapUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+
+      try {
+        const res = await fetch(`${BASE_URL}/api/orders/${activeChatOrderId}/messages`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            senderId: currentUser.id,
+            senderName: currentUser.fullName,
+            text: `[LOCATION]${mapUrl}`
+          })
+        });
+        if (!res.ok) throw new Error("Konum göndərilmədi.");
+        fetchChatMessages(true);
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    },
+    () => {
+      showToast("Konum icazəsi verilmədi və ya tapılmadı.", "error");
+    },
+    { enableHighAccuracy: true, timeout: 10000 }
+  );
 }

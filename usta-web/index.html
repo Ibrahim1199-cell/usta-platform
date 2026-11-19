@@ -374,7 +374,10 @@
                     <i data-lucide="image-plus" class="w-5 h-5"></i>
                     <input type="file" id="chatImageInput" accept="image/*" class="hidden" onchange="handleChatImageUpload(this)">
                 </label>
-
+                <button type="button" onclick="sendChatLocation()" title="Konum göndər"
+                    class="p-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-[#2D5A3C] transition cursor-pointer shrink-0">
+                    <i data-lucide="map-pin" class="w-5 h-5"></i>
+                </button>
                 <input id="chatMessageInput" type="text" placeholder="Mesajınızı yazın..."
                     onkeypress="if(event.key === 'Enter') sendChatMessage()"
                     class="flex-1 h-10 px-4 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-[#2D5A3C]">

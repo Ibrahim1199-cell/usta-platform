@@ -249,22 +249,6 @@ function switchAuthMode(mode) {
     lucide.createIcons();
 }
 
-function setLoginRoleHint(role) {
-    const btnC = document.getElementById("loginRoleCustomer");
-    const btnM = document.getElementById("loginRoleMaster");
-    const hint = document.getElementById("loginRoleHintText");
-
-    if (role === "MUSTERI") {
-        btnC.className = "py-2 text-xs font-bold rounded-lg bg-white text-slate-900 shadow-sm transition-all";
-        btnM.className = "py-2 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-800 transition-all";
-        hint.innerText = "Sifarişlərinizi idarə edin və etibarlı ustalar tapın.";
-    } else {
-        btnM.className = "py-2 text-xs font-bold rounded-lg bg-white text-slate-900 shadow-sm transition-all";
-        btnC.className = "py-2 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-800 transition-all";
-        hint.innerText = "Gələn sifarişləri qəbul edin, portfolionuzu və rəylərinizi idarə edin.";
-    }
-}
-
 function togglePassword(inputId, btn) {
     const input = document.getElementById(inputId);
     const isPass = input.type === "password";
@@ -285,7 +269,7 @@ async function handleLogin(e) {
     const btn = document.getElementById("btnLogin");
 
     btn.disabled = true;
-    btn.innerHTML = `<span>Serverə qoşulur...</span>`;
+    btn.innerHTML = `<span>Hesaba daxil olunur...</span>`;
 
     try {
         const res = await fetch(`${BASE_URL}/api/login`, {
@@ -445,7 +429,7 @@ async function loadMastersView() {
     const main = document.getElementById("mainContent");
     main.innerHTML = `
         <!-- Figma Hero Axtarış Banneri -->
-        <div class="bg-[#EBF2EE] p-6 sm:p-8 rounded-[28px] border border-[#DCE4DF] space-y-5">
+        <div class="hero-banner bg-[#EBF2EE] p-6 sm:p-8 rounded-[28px] border border-[#DCE4DF] space-y-5">
             <div class="flex flex-wrap items-center justify-between gap-2">
                 <span class="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#1F563D]">YERLİ TƏCRÜBƏ. DAHA AZ İŞ.</span>
                 <div class="flex flex-wrap items-center gap-4 text-[11px] font-semibold text-[#1F563D]">
@@ -461,7 +445,7 @@ async function loadMastersView() {
             </div>
 
             <!-- Birləşdirilmiş Ağ Axtarış Çubuğu -->
-            <div class="bg-white p-2 rounded-2xl border border-[#DCE4DF] shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+            <div class="search-panel bg-white p-2 rounded-2xl border border-[#DCE4DF] shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                 <div class="flex-1 flex items-center gap-2.5 px-3">
                     <i data-lucide="search" class="w-4 h-4 text-slate-400 shrink-0"></i>
                     <input id="masterSearchInput" type="text" oninput="applyMasterFilters()"
@@ -614,7 +598,7 @@ function renderMasterCardsGrid(list, containerId, isSavedView = false) {
     grid.innerHTML = list.map(m => {
         const isSaved = savedIds.includes(m.id);
         return `
-            <div class="bg-white p-5 rounded-2xl border border-[#E6EAE7] hover:border-[#1F563D]/40 hover:shadow-md transition-all flex flex-col justify-between">
+            <div class="service-card bg-white p-5 rounded-2xl border border-[#E6EAE7] hover:border-[#1F563D]/40 hover:shadow-md transition-all flex flex-col justify-between">
                 <div>
                     <div class="flex items-start justify-between gap-2">
                         <div class="flex items-center gap-3.5 min-w-0">
@@ -718,7 +702,7 @@ async function openMasterProfile(masterId) {
         </div>
 
         <!-- Üst Profil Başlıq Kartı -->
-        <div class="bg-white p-6 rounded-2xl border border-[#E6EAE7] flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div class="profile-header-card bg-white p-6 rounded-2xl border border-[#E6EAE7] flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div class="flex items-center gap-5">
                 <img src="${getAvatarUrl(master)}" class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border border-[#DCE2DE] shrink-0">
                 <div class="space-y-1">
@@ -765,7 +749,7 @@ async function openMasterProfile(masterId) {
             
             <!-- Sol 2 Sütun: Haqqında, Portfolio, Rəylər -->
             <div class="lg:col-span-2 space-y-6">
-                <div class="bg-white p-6 rounded-2xl border border-[#E6EAE7] space-y-6">
+                <div class="content-card bg-white p-6 rounded-2xl border border-[#E6EAE7] space-y-6">
                     <div>
                         <h2 class="text-base font-extrabold text-slate-900 mb-2">Haqqımda</h2>
                         <p class="text-sm text-slate-600 leading-relaxed">
@@ -794,7 +778,7 @@ async function openMasterProfile(masterId) {
                         </div>
 
                         ${reviews.length > 0 ? reviews.map(r => `
-                            <div class="p-4 rounded-2xl bg-[#FAFBF9] border border-[#E6EAE7] space-y-2">
+                            <div class="review-card p-4 rounded-2xl bg-[#FAFBF9] border border-[#E6EAE7] space-y-2">
                                 <div class="flex items-center justify-between">
                                     <span class="text-xs font-extrabold text-amber-500">
                                         ${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}
@@ -816,7 +800,7 @@ async function openMasterProfile(masterId) {
 
             <!-- Sağ Sütun: Birbaşa Sifariş Kartı -->
             <div class="space-y-4 lg:sticky lg:top-24">
-                <div class="bg-white p-6 rounded-2xl border border-[#E6EAE7] shadow-sm space-y-4">
+                <div class="content-card bg-white p-6 rounded-2xl border border-[#E6EAE7] shadow-sm space-y-4">
                     <div>
                         <h3 class="text-lg font-extrabold text-slate-900">Gəlin həll edək.</h3>
                         <p class="text-xs text-slate-500 mt-0.5">Ustaya birbaşa sifariş göndərin və qiymət təklifi alın.</p>
@@ -855,7 +839,7 @@ async function openMasterProfile(masterId) {
                     </a>
                 </div>
 
-                <div class="bg-[#EBF2EE] p-5 rounded-2xl border border-[#DCE4DF] space-y-2.5">
+                <div class="insight-card bg-[#EBF2EE] p-5 rounded-2xl border border-[#DCE4DF] space-y-2.5">
                     <p class="text-xs font-extrabold text-[#1F563D]">Keyfiyyətli iş. Təxminlərə yer yoxdur.</p>
                     <ul class="space-y-1.5 text-[11px] text-[#1F563D]/90 font-medium">
                         <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5"></i> Şəxsiyyəti yoxlanılmış peşəkar</li>
@@ -999,15 +983,15 @@ async function loadCustomerOrdersView() {
             <div class="lg:col-span-2 space-y-5">
                 <!-- 3 Statistika Kartı -->
                 <div class="grid grid-cols-3 gap-3.5">
-                    <div class="bg-white p-4 sm:p-5 rounded-2xl border border-[#E6EAE7]">
+                    <div class="stat-card bg-white p-4 sm:p-5 rounded-2xl border border-[#E6EAE7]">
                         <p class="text-2xl font-extrabold text-slate-900">${activeCount}</p>
                         <p class="text-xs text-slate-500 mt-1">Aktiv sifarişlər</p>
                     </div>
-                    <div class="bg-white p-4 sm:p-5 rounded-2xl border border-[#E6EAE7]">
+                    <div class="stat-card bg-white p-4 sm:p-5 rounded-2xl border border-[#E6EAE7]">
                         <p class="text-2xl font-extrabold text-slate-900">${pendingCount}</p>
                         <p class="text-xs text-slate-500 mt-1">Təsdiq gözləyir</p>
                     </div>
-                    <div class="bg-white p-4 sm:p-5 rounded-2xl border border-[#E6EAE7]">
+                    <div class="stat-card bg-white p-4 sm:p-5 rounded-2xl border border-[#E6EAE7]">
                         <p class="text-2xl font-extrabold text-slate-900">${completedCount}</p>
                         <p class="text-xs text-slate-500 mt-1">Tamamlanmış</p>
                     </div>
@@ -1044,7 +1028,7 @@ async function loadCustomerOrdersView() {
                         const masterPhone = master ? master.phone : "";
 
                         return `
-                            <div class="bg-white p-5 rounded-2xl border border-[#E6EAE7] space-y-4">
+                            <div class="order-card bg-white p-5 rounded-2xl border border-[#E6EAE7] space-y-4">
                                 <div class="flex items-start justify-between gap-4">
                                     <div class="space-y-1.5">
                                         <div class="flex items-center gap-2">
@@ -1113,7 +1097,7 @@ async function loadCustomerOrdersView() {
             <!-- Sağ Sütun: Növbəti Görüş və Məsləhət Kartı -->
             <div class="space-y-4">
                 ${nextVisit ? `
-                    <div class="bg-[#EBF2EE] p-6 rounded-2xl border border-[#DCE4DF] space-y-4">
+                    <div class="insight-card bg-[#EBF2EE] p-6 rounded-2xl border border-[#DCE4DF] space-y-4">
                         <div>
                             <p class="text-[10px] font-extrabold uppercase tracking-wider text-[#1F563D]">NÖVBƏTİ İŞİNİZ</p>
                             <h3 class="text-lg font-extrabold text-slate-900 mt-1">${escapeHtml(nextVisit.description)}</h3>
@@ -1131,7 +1115,7 @@ async function loadCustomerOrdersView() {
                     </div>
                 ` : ""}
 
-                <div class="bg-white p-6 rounded-2xl border border-[#E6EAE7] space-y-2">
+                <div class="content-card bg-white p-6 rounded-2xl border border-[#E6EAE7] space-y-2">
                     <h4 class="text-sm font-extrabold text-slate-900">Daha rahat xidmət üçün</h4>
                     <p class="text-xs text-slate-500 leading-relaxed">
                         Usta gəlməzdən əvvəl çatda problemin şəklini və dəqiq konumunuzu paylaşın ki, usta lazım olan bütün alətləri özü ilə gətirsin.
@@ -1239,15 +1223,15 @@ async function loadMasterOrdersView() {
             <div class="lg:col-span-2 space-y-5">
                 <!-- 3 Statistika Kartı -->
                 <div class="grid grid-cols-3 gap-3.5">
-                    <div class="bg-white p-4 sm:p-5 rounded-2xl border border-[#E6EAE7]">
+                    <div class="stat-card bg-white p-4 sm:p-5 rounded-2xl border border-[#E6EAE7]">
                         <p class="text-2xl font-extrabold text-slate-900">${pendingCount}</p>
                         <p class="text-xs text-slate-500 mt-1">Yeni sorğular</p>
                     </div>
-                    <div class="bg-white p-4 sm:p-5 rounded-2xl border border-[#E6EAE7]">
+                    <div class="stat-card bg-white p-4 sm:p-5 rounded-2xl border border-[#E6EAE7]">
                         <p class="text-2xl font-extrabold text-slate-900">${activeCount}</p>
                         <p class="text-xs text-slate-500 mt-1">İcrada olan işlər</p>
                     </div>
-                    <div class="bg-white p-4 sm:p-5 rounded-2xl border border-[#E6EAE7]">
+                    <div class="stat-card bg-white p-4 sm:p-5 rounded-2xl border border-[#E6EAE7]">
                         <p class="text-2xl font-extrabold text-[#1F563D]">${totalEarned} ₼</p>
                         <p class="text-xs text-slate-500 mt-1">Ümumi qazanc</p>
                     </div>
@@ -1277,7 +1261,7 @@ async function loadMasterOrdersView() {
                             <p class="font-bold text-slate-800">Bu bölmədə sifariş yoxdur</p>
                         </div>
                     ` : filteredOrders.map(o => `
-                        <div class="bg-white p-5 rounded-2xl border border-[#E6EAE7] space-y-4">
+                        <div class="order-card bg-white p-5 rounded-2xl border border-[#E6EAE7] space-y-4">
                             <div class="flex items-start justify-between gap-4">
                                 <div class="space-y-1.5">
                                     <div class="flex items-center gap-2">
@@ -1345,7 +1329,7 @@ async function loadMasterOrdersView() {
 
             <!-- Sağ Sütun: Qazanc Xülasəsi və Məsləhət -->
             <div class="space-y-4">
-                <div class="bg-[#EBF2EE] p-6 rounded-2xl border border-[#DCE4DF] space-y-4">
+                <div class="insight-card bg-[#EBF2EE] p-6 rounded-2xl border border-[#DCE4DF] space-y-4">
                     <div>
                         <p class="text-[10px] font-extrabold uppercase tracking-wider text-[#1F563D]">QAZANC XÜLASƏSİ</p>
                         <p class="text-3xl font-extrabold text-slate-900 mt-1.5">${totalEarned} AZN</p>
@@ -1361,7 +1345,7 @@ async function loadMasterOrdersView() {
                     </button>
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl border border-[#E6EAE7] space-y-2">
+                <div class="content-card bg-white p-6 rounded-2xl border border-[#E6EAE7] space-y-2">
                     <h4 class="text-sm font-extrabold text-slate-900">Yaxşı ilk təəssürat yaradın</h4>
                     <p class="text-xs text-slate-500 leading-relaxed">
                         Müştərilərin sorğularına çatda tez cavab vermək və portfolionuzda gördüyünüz işlərin şəkillərini paylaşmaq sifariş sayını artırır.
@@ -1440,7 +1424,7 @@ async function loadProfileView() {
         } catch (e) { /* ignore */ }
 
         reviewsBlock = `
-            <div id="secReviews" class="bg-white p-6 rounded-2xl border border-[#E6EAE7] space-y-4">
+            <div id="secReviews" class="profile-section-card bg-white p-6 rounded-2xl border border-[#E6EAE7] space-y-4">
                 <div>
                     <h3 class="font-extrabold text-base text-slate-900">Müştəri rəyləri və cavablar</h3>
                     <p class="text-xs text-slate-500">Orta reytinqiniz: ⭐ <b>${currentUser.rating > 0 ? currentUser.rating.toFixed(1) : "0.0"}</b> (${currentUser.ratingCount || 0} rəy)</p>
@@ -1448,7 +1432,7 @@ async function loadProfileView() {
 
                 <div class="space-y-3">
                     ${reviews.length > 0 ? reviews.map(r => `
-                        <div class="p-4 rounded-xl bg-[#FAFBF9] border border-[#E6EAE7] space-y-2">
+                        <div class="review-card p-4 rounded-xl bg-[#FAFBF9] border border-[#E6EAE7] space-y-2">
                             <div class="flex items-center justify-between">
                                 <span class="text-xs font-extrabold text-amber-500">${"★".repeat(r.rating)} (${r.rating}/5)</span>
                                 <span class="text-[11px] text-slate-400">İş: ${escapeHtml(r.description)}</span>
@@ -1510,7 +1494,7 @@ async function loadProfileView() {
             <div class="lg:col-span-3 space-y-6">
                 
                 <!-- Kart 1: İctimai Profil -->
-                <div id="secPublicProfile" class="bg-white p-6 rounded-2xl border border-[#E6EAE7] space-y-6">
+                <div id="secPublicProfile" class="profile-section-card bg-white p-6 rounded-2xl border border-[#E6EAE7] space-y-6">
                     <div>
                         <h2 class="text-base font-extrabold text-slate-900">İctimai profil</h2>
                         <p class="text-xs text-slate-500">Müştərilər sizi axtararkən bu məlumatları görəcəklər.</p>
@@ -1580,7 +1564,7 @@ async function loadProfileView() {
 
                 <!-- Kart 2: İş Portfoliosu (Figma 08 Grid) -->
                 ${isMaster ? `
-                    <div id="secPortfolio" class="bg-white p-6 rounded-2xl border border-[#E6EAE7] space-y-4">
+                    <div id="secPortfolio" class="profile-section-card bg-white p-6 rounded-2xl border border-[#E6EAE7] space-y-4">
                         <div>
                             <h3 class="font-extrabold text-base text-slate-900">Gördüyünüz işlər</h3>
                             <p class="text-xs text-slate-500">Ən yaxşı işlərinizin şəkillərini yükləyin (${photos.length} şəkil əlavə edilib).</p>
@@ -1783,7 +1767,7 @@ async function fetchChatMessages(scrollToBottom = false) {
             box.innerHTML = `
                 <div class="text-center py-12 space-y-1">
                     <p class="text-xs font-bold text-slate-500">Hələ mesaj yoxdur</p>
-                    <p class="text-[11px] text-slate-400">İşin detallarını dəqiqləşdirmək üçün mesaj, şəkil və ya konum göndərin.</p>
+                    <p class="text-[11px] text-slate-400">İşin detallarını dəqiqləşdirmək üçün mesaj, şəkil və ya məkan göndərin.</p>
                 </div>
             `;
             return;
@@ -1808,7 +1792,7 @@ async function fetchChatMessages(scrollToBottom = false) {
                                 class="block p-2.5 rounded-xl ${isMe ? "bg-white/15 hover:bg-white/25 text-white" : "bg-white hover:bg-slate-50 text-slate-800 border border-[#DCE2DE]"} transition space-y-1">
                                 <div class="flex items-center gap-1.5 font-bold text-xs">
                                     <span class="w-2 h-2 rounded-full ${isMe ? "bg-emerald-300" : "bg-[#1F563D]"}"></span>
-                                    <span>Canlı konum paylaşıldı</span>
+                                    <span>Canlı məkan paylaşıldı</span>
                                 </div>
                                 <p class="text-[11px] opacity-80 flex items-center gap-1">
                                     <span>Google Maps-də aç</span>
@@ -1880,11 +1864,11 @@ async function handleChatImageUpload(input) {
 function sendChatLocation() {
     if (!activeChatOrderId || !currentUser) return;
     if (!navigator.geolocation) {
-        showToast("Brauzeriniz konum xidmətini dəstəkləmir.", "error");
+        showToast("Brauzeriniz məkan xidmətini dəstəkləmir.", "error");
         return;
     }
 
-    showToast("Konum müəyyən edilir...", "info");
+    showToast("Məkan müəyyən edilir...", "info");
 
     navigator.geolocation.getCurrentPosition(
         async (pos) => {
@@ -1902,14 +1886,14 @@ function sendChatLocation() {
                         text: `[LOCATION]${mapUrl}`
                     })
                 });
-                if (!res.ok) throw new Error("Konum göndərilmədi.");
+                if (!res.ok) throw new Error("Məkan göndərilmədi.");
                 fetchChatMessages(true);
             } catch (err) {
                 showToast(err.message, "error");
             }
         },
         () => {
-            showToast("Konum icazəsi verilmədi və ya tapılmadı.", "error");
+            showToast("Məkan icazəsi verilmədi və ya tapılmadı.", "error");
         },
         { enableHighAccuracy: true, timeout: 10000 }
     );

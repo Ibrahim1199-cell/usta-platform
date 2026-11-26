@@ -241,7 +241,7 @@ async function playUnreadMessageSound() {
         const now = audioCtx.currentTime;
         const notes = [
             { frequency: 523, start: now },
-            { frequency: 659, start: now + 0.11 }
+            { frequency: 659, start: now + 0.11 },
             { frequency: 784, start: now + 0.22 }
         ];
 

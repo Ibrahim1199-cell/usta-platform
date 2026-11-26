@@ -22,14 +22,41 @@ let selectedCategory = "Hamısı";
 let activeTab = "";
 let activeChatOrderId = null;
 let chatPollTimer = null;
+let unreadPollTimer = null;
+let unreadPollInProgress = false;
+let trackedUnreadOrders = [];
+let unreadCountsByOrder = Object.create(null);
+let latestObservedMessageIds = Object.create(null);
+let unreadMessageRequests = Object.create(null);
 let customerOrderFilter = "ALL";
 let masterOrderFilter = "ALL";
+const audioCtx = (() => {
+    const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextConstructor) return null;
+
+    try {
+        return new AudioContextConstructor();
+    } catch (error) {
+        console.warn("Bildiriş səsi üçün audio başladılmadı.", error);
+        return null;
+    }
+})();
+
+function unlockAudioContext() {
+    document.removeEventListener("click", unlockAudioContext);
+    document.removeEventListener("keydown", unlockAudioContext);
+    if (!audioCtx || audioCtx.state !== "suspended") return;
+
+    audioCtx.resume().catch(error => console.warn("Bildiriş səsi açıla bilmədi.", error));
+}
 
 // =========================================================
 // İŞƏ DÜŞMƏ VƏ MODALLARIN BAĞLANMASI
 // =========================================================
 document.addEventListener("DOMContentLoaded", () => {
     lucide.createIcons();
+    document.addEventListener("click", unlockAudioContext, { once: true });
+    document.addEventListener("keydown", unlockAudioContext, { once: true });
 
     document.querySelectorAll(".modal-backdrop").forEach(backdrop => {
         backdrop.addEventListener("click", (e) => {
@@ -65,16 +92,19 @@ function showToast(message, type = "success") {
     const styles = {
         success: "bg-slate-900 text-white border-slate-800",
         error: "bg-red-600 text-white border-red-700",
-        info: "bg-[#1F563D] text-white border-[#184430]"
+        info: "bg-[#1F563D] text-white border-[#184430]",
+        message: "bg-white text-slate-800 border-[#DCE7E1]"
     };
 
     const icons = {
         success: "check-circle-2",
         error: "alert-circle",
-        info: "info"
+        info: "info",
+        message: "message-circle"
     };
 
     toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3.5 rounded-2xl shadow-xl border text-sm font-semibold transition-all duration-300 ${styles[type] || styles.success}`;
+    toast.dataset.toastType = type;
     toast.innerHTML = `
         <i data-lucide="${icons[type] || "info"}" class="w-4 h-4 shrink-0"></i>
         <span class="flex-1">${escapeHtml(message)}</span>
@@ -147,6 +177,209 @@ function getStatusBadge(status) {
     };
     const item = map[status] || { label: status, cls: "bg-slate-100 text-slate-700 border-slate-200" };
     return `<span class="text-[11px] font-bold px-2.5 py-1 rounded-full border ${item.cls}">${item.label}</span>`;
+}
+
+function getLastReadMessageId(orderId) {
+    const storedId = Number(localStorage.getItem(`masterly_last_read_${currentUser.id}_${orderId}`));
+    return Number.isFinite(storedId) ? storedId : 0;
+}
+
+function markOrderMessagesRead(orderId, latestMessageId) {
+    const key = String(orderId);
+    const latestKnownId = Math.max(
+        getLastReadMessageId(key),
+        Number(latestMessageId) || 0,
+        Number(latestObservedMessageIds[key]) || 0
+    );
+
+    localStorage.setItem(`masterly_last_read_${currentUser.id}_${key}`, String(latestKnownId));
+    unreadCountsByOrder[key] = 0;
+    updateUnreadBadges();
+}
+
+function unreadBadgeMarkup(orderId) {
+    return `<span data-unread-order="${orderId}" class="unread-count-badge" hidden aria-label="Oxunmamış mesaj"></span>`;
+}
+
+function updateUnreadBadges() {
+    document.querySelectorAll("[data-unread-order]").forEach(badge => {
+        const count = unreadCountsByOrder[badge.dataset.unreadOrder] || 0;
+        badge.hidden = count === 0;
+        badge.textContent = count > 99 ? "99+" : String(count);
+        badge.setAttribute("aria-label", `${count} oxunmamış mesaj`);
+    });
+
+    const total = Object.values(unreadCountsByOrder).reduce((sum, count) => sum + count, 0);
+    document.querySelectorAll("[data-total-unread]").forEach(badge => {
+        badge.hidden = total === 0;
+        badge.textContent = total > 99 ? "99+" : String(total);
+        badge.setAttribute("aria-label", `${total} oxunmamış mesaj`);
+    });
+}
+
+function setTrackedUnreadOrders(orders) {
+    trackedUnreadOrders = Array.isArray(orders)
+        ? orders.filter(order =>
+            order &&
+            order.id !== undefined &&
+            order.id !== null &&
+            !["TAMAMLANDI", "LEGV_EDILDI", "IMTINA_EDILDI"].includes(order.status)
+        )
+        : [];
+    const trackedIds = new Set(trackedUnreadOrders.map(order => String(order.id)));
+
+    Object.keys(unreadCountsByOrder).forEach(orderId => {
+        if (!trackedIds.has(orderId)) delete unreadCountsByOrder[orderId];
+    });
+    updateUnreadBadges();
+}
+
+async function playUnreadMessageSound() {
+    if (!audioCtx) return;
+    try {
+        if (audioCtx.state === "suspended") await audioCtx.resume();
+        const now = audioCtx.currentTime;
+        const notes = [
+            { frequency: 587, start: now },
+            { frequency: 880, start: now + 0.15 }
+        ];
+
+        notes.forEach(note => {
+            const oscillator = audioCtx.createOscillator();
+            const volume = audioCtx.createGain();
+
+            oscillator.type = "sine";
+            oscillator.frequency.setValueAtTime(note.frequency, note.start);
+            volume.gain.setValueAtTime(0.0001, note.start);
+            volume.gain.exponentialRampToValueAtTime(0.25, note.start + 0.015);
+            volume.gain.setValueAtTime(0.25, note.start + 0.12);
+            volume.gain.exponentialRampToValueAtTime(0.0001, note.start + 0.18);
+            oscillator.connect(volume);
+            volume.connect(audioCtx.destination);
+            oscillator.start(note.start);
+            oscillator.stop(note.start + 0.18);
+        });
+    } catch (error) {
+        console.warn("Bildiriş səsi başladılmadı.", error);
+    }
+}
+
+function notifyIncomingMessages(orderId, messages, chatIsOpen) {
+    playUnreadMessageSound();
+    if (chatIsOpen) return;
+
+    const message = messages.reduce((latest, item) =>
+        !latest || Number(item.id) > Number(latest.id) ? item : latest, null
+    );
+    const notification = messages.length === 1 && message.senderName
+        ? `${message.senderName} sizə yeni mesaj göndərdi.`
+        : `Sifariş #${orderId} üçün ${messages.length} yeni mesaj var.`;
+    showToast(notification, "message");
+}
+
+function updateUnreadMessageState(orderId, messages, notifyNewMessages = true) {
+    const key = String(orderId);
+    const previousLatestId = Object.prototype.hasOwnProperty.call(latestObservedMessageIds, key)
+        ? latestObservedMessageIds[key]
+        : null;
+    const lastReadId = getLastReadMessageId(key);
+    const chatModal = document.getElementById("chatModal");
+    const chatIsOpen = String(activeChatOrderId) === key && chatModal && !chatModal.classList.contains("hidden");
+
+    if (notifyNewMessages && previousLatestId !== null) {
+        const newUnreadMessages = messages.filter(message =>
+            Number(message.id) > previousLatestId &&
+            Number(message.id) > lastReadId &&
+            String(message.senderId) !== String(currentUser.id)
+        );
+        if (newUnreadMessages.length > 0) {
+            notifyIncomingMessages(key, newUnreadMessages, chatIsOpen);
+        }
+    }
+
+    const latestMessageId = messages.reduce((latest, message) =>
+        Math.max(latest, Number(message.id) || 0), Number(previousLatestId) || 0
+    );
+    latestObservedMessageIds[key] = latestMessageId;
+
+    if (chatIsOpen) {
+        markOrderMessagesRead(key, latestMessageId);
+        return;
+    }
+
+    unreadCountsByOrder[key] = messages.filter(message =>
+        Number(message.id) > getLastReadMessageId(key) &&
+        String(message.senderId) !== String(currentUser.id)
+    ).length;
+    updateUnreadBadges();
+}
+
+async function pollUnreadMessagesForOrder(order, notifyNewMessages = true) {
+    if (!currentUser) return;
+    const key = String(order.id);
+    const userId = String(currentUser.id);
+    if (unreadMessageRequests[key]) return unreadMessageRequests[key];
+
+    const request = (async () => {
+        try {
+            const res = await fetch(`${BASE_URL}/api/orders/${order.id}/messages`);
+            if (!res.ok) throw new Error(`Mesajlar yüklənmədi (Xəta ${res.status}).`);
+
+            const messages = await res.json();
+            if (!Array.isArray(messages)) throw new Error("Mesaj siyahısının formatı düzgün deyil.");
+            if (!currentUser || String(currentUser.id) !== userId) return;
+            updateUnreadMessageState(order.id, messages, notifyNewMessages);
+        } catch (error) {
+            console.warn(`Sifariş #${order.id} üçün mesajlar yoxlanılmadı.`, error);
+        }
+    })();
+
+    unreadMessageRequests[key] = request;
+    try {
+        await request;
+    } finally {
+        if (unreadMessageRequests[key] === request) delete unreadMessageRequests[key];
+    }
+}
+
+async function refreshUnreadMessagesForOrders(orders, notifyNewMessages = true) {
+    await Promise.all(orders.map(order => pollUnreadMessagesForOrder(order, notifyNewMessages)));
+}
+
+async function pollUnreadMessages() {
+    if (!currentUser || unreadPollInProgress) return;
+    unreadPollInProgress = true;
+    const userId = String(currentUser.id);
+    const endpoint = currentUser.role === "USTA"
+        ? `${BASE_URL}/api/orders/master/${currentUser.id}`
+        : `${BASE_URL}/api/orders/customer/${currentUser.id}`;
+
+    try {
+        try {
+            const res = await fetch(endpoint);
+            if (!res.ok) throw new Error(`Sifarişlər yüklənmədi (Xəta ${res.status}).`);
+
+            const orders = await res.json();
+            if (!Array.isArray(orders)) throw new Error("Sifariş siyahısının formatı düzgün deyil.");
+            if (!currentUser || String(currentUser.id) !== userId) return;
+            setTrackedUnreadOrders(orders);
+        } catch (error) {
+            console.warn("Oxunmamış mesajlar üçün sifarişlər yenilənmədi.", error);
+        }
+
+        if (!currentUser || String(currentUser.id) !== userId) return;
+        await refreshUnreadMessagesForOrders(trackedUnreadOrders, true);
+    } catch (error) {
+        console.warn("Oxunmamış mesajlar yoxlanılmadı.", error);
+    } finally {
+        unreadPollInProgress = false;
+    }
+}
+
+function startUnreadMessagePolling() {
+    if (unreadPollTimer) clearInterval(unreadPollTimer);
+    pollUnreadMessages();
+    unreadPollTimer = setInterval(pollUnreadMessages, 15000);
 }
 
 // =========================================================
@@ -356,6 +589,13 @@ function logout() {
     localStorage.removeItem("usta_user");
     currentUser = null;
     if (chatPollTimer) clearInterval(chatPollTimer);
+    if (unreadPollTimer) clearInterval(unreadPollTimer);
+    unreadPollTimer = null;
+    trackedUnreadOrders = [];
+    unreadCountsByOrder = Object.create(null);
+    latestObservedMessageIds = Object.create(null);
+    unreadMessageRequests = Object.create(null);
+    updateUnreadBadges();
     document.getElementById("dashboardSection").classList.add("hidden");
     document.getElementById("authSection").classList.remove("hidden");
     showToast("Hesabdan çıxış edildi.", "info");
@@ -384,20 +624,24 @@ function initDashboard() {
 
     document.getElementById("desktopNav").innerHTML = tabs.map(t => `
         <button onclick="switchTab('${t.id}')" data-tab="${t.id}"
-            class="nav-btn h-full px-1 border-b-2 text-xs font-bold flex items-center gap-1.5 transition">
+            class="nav-btn relative h-full px-1 border-b-2 text-xs font-bold flex items-center gap-1.5 transition">
             <span>${t.label}</span>
+            ${t.id === "masterOrders" || t.id === "customerOrders" ? `<span data-total-unread class="nav-unread-badge" hidden></span>` : ""}
         </button>
     `).join("");
 
     document.getElementById("mobileNav").innerHTML = tabs.map(t => `
         <button onclick="switchTab('${t.id}')" data-tab="${t.id}"
-            class="mobile-nav-btn flex-1 py-1.5 flex flex-col items-center justify-center gap-1 rounded-xl text-[11px] font-bold transition">
+            class="mobile-nav-btn relative flex-1 py-1.5 flex flex-col items-center justify-center gap-1 rounded-xl text-[11px] font-bold transition">
             <i data-lucide="${t.icon}" class="w-4 h-4"></i>
             <span>${t.label}</span>
+            ${t.id === "masterOrders" || t.id === "customerOrders" ? `<span data-total-unread class="nav-unread-badge mobile-nav-unread-badge" hidden></span>` : ""}
         </button>
     `).join("");
 
     switchTab(isMaster ? "masterOrders" : "masters");
+    updateUnreadBadges();
+    startUnreadMessagePolling();
 }
 
 function updateNavbarUser() {
@@ -417,15 +661,15 @@ function switchTab(tabId) {
     document.querySelectorAll(".nav-btn").forEach(btn => {
         const active = btn.dataset.tab === tabId;
         btn.className = active
-            ? "nav-btn h-full px-1 border-b-2 border-[#1F563D] text-slate-900 text-xs font-bold flex items-center gap-1.5 transition"
-            : "nav-btn h-full px-1 border-b-2 border-transparent text-slate-500 hover:text-slate-900 text-xs font-semibold flex items-center gap-1.5 transition";
+            ? "nav-btn relative h-full px-1 border-b-2 border-[#1F563D] text-slate-900 text-xs font-bold flex items-center gap-1.5 transition"
+            : "nav-btn relative h-full px-1 border-b-2 border-transparent text-slate-500 hover:text-slate-900 text-xs font-semibold flex items-center gap-1.5 transition";
     });
 
     document.querySelectorAll(".mobile-nav-btn").forEach(btn => {
         const active = btn.dataset.tab === tabId;
         btn.className = active
-            ? "mobile-nav-btn flex-1 py-1.5 flex flex-col items-center justify-center gap-1 rounded-xl text-[11px] font-bold text-[#1F563D] bg-[#EBF2EE] transition"
-            : "mobile-nav-btn flex-1 py-1.5 flex flex-col items-center justify-center gap-1 rounded-xl text-[11px] font-bold text-slate-400 transition";
+            ? "mobile-nav-btn relative flex-1 py-1.5 flex flex-col items-center justify-center gap-1 rounded-xl text-[11px] font-bold text-[#1F563D] bg-[#EBF2EE] transition"
+            : "mobile-nav-btn relative flex-1 py-1.5 flex flex-col items-center justify-center gap-1 rounded-xl text-[11px] font-bold text-slate-400 transition";
     });
 
     if (tabId === "masters") loadMastersView();
@@ -957,6 +1201,8 @@ async function loadCustomerOrdersView() {
 
     const res = await fetch(`${BASE_URL}/api/orders/customer/${currentUser.id}`);
     const orders = await res.json();
+    setTrackedUnreadOrders(orders);
+    refreshUnreadMessagesForOrders(trackedUnreadOrders);
 
     const activeCount = orders.filter(o => o.status === "QEBUL_EDILDI").length;
     const pendingCount = orders.filter(o => o.status === "GOZLEMEDE").length;
@@ -1067,8 +1313,9 @@ async function loadCustomerOrdersView() {
                                     ` : ""}
 
                                     <button onclick="openChat(${o.id}, '${escapeHtml(masterTitle)}', '${escapeHtml(o.description)}', '${escapeHtml(masterAvatar)}', '${escapeHtml(masterPhone)}')"
-                                        class="px-3.5 h-9 rounded-xl bg-[#EBF2EE] hover:bg-[#DCE7E1] text-[#1F563D] text-xs font-bold flex items-center gap-1.5">
+                                        class="relative px-3.5 h-9 rounded-xl bg-[#EBF2EE] hover:bg-[#DCE7E1] text-[#1F563D] text-xs font-bold flex items-center gap-1.5">
                                         <i data-lucide="message-square" class="w-3.5 h-3.5"></i> Mesaj
+                                        ${unreadBadgeMarkup(o.id)}
                                     </button>
 
                                     ${o.status === "GOZLEMEDE" ? `
@@ -1121,9 +1368,10 @@ async function loadCustomerOrdersView() {
                             <p class="text-slate-500">${escapeHtml(nextVisit.address)}</p>
                         </div>
                         <button onclick="openChat(${nextVisit.id}, '${escapeHtml(nextMaster ? nextMaster.fullName : "Usta")}', '${escapeHtml(nextVisit.description)}', '${escapeHtml(getAvatarUrl(nextMaster))}', '${escapeHtml(nextMaster ? nextMaster.phone : "")}')"
-                            class="w-full h-10 rounded-xl bg-[#1F563D] hover:bg-[#184430] text-white text-xs font-bold flex items-center justify-center gap-1.5 transition">
+                            class="relative w-full h-10 rounded-xl bg-[#1F563D] hover:bg-[#184430] text-white text-xs font-bold flex items-center justify-center gap-1.5 transition">
                             <span>Yazışmanı aç</span>
                             <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                            ${unreadBadgeMarkup(nextVisit.id)}
                         </button>
                     </div>
                 ` : ""}
@@ -1197,6 +1445,8 @@ async function loadMasterOrdersView() {
 
     const res = await fetch(`${BASE_URL}/api/orders/master/${currentUser.id}`);
     const orders = await res.json();
+    setTrackedUnreadOrders(orders);
+    refreshUnreadMessagesForOrders(trackedUnreadOrders);
 
     const pendingCount = orders.filter(o => o.status === "GOZLEMEDE").length;
     const activeCount = orders.filter(o => o.status === "QEBUL_EDILDI").length;
@@ -1295,8 +1545,9 @@ async function loadMasterOrdersView() {
 
                             <div class="flex flex-wrap items-center gap-2 pt-3 border-t border-[#F0F3F1]">
                                 <button onclick="openChat(${o.id}, 'Müştəri ilə Yazışma', '${escapeHtml(o.description)}', '${escapeHtml(getAvatarUrl({ fullName: "Müştəri" }))}', '')"
-                                    class="px-3.5 h-9 rounded-xl bg-[#EBF2EE] hover:bg-[#DCE7E1] text-[#1F563D] text-xs font-bold flex items-center gap-1.5">
+                                    class="relative px-3.5 h-9 rounded-xl bg-[#EBF2EE] hover:bg-[#DCE7E1] text-[#1F563D] text-xs font-bold flex items-center gap-1.5">
                                     <i data-lucide="message-square" class="w-3.5 h-3.5"></i> Mesaj
+                                    ${unreadBadgeMarkup(o.id)}
                                 </button>
 
                                 ${o.status === "GOZLEMEDE" ? `
@@ -1857,6 +2108,7 @@ function openChat(orderId, title, subtitle, avatarUrl = "", phone = "") {
 
     document.getElementById("chatMessagesContainer").innerHTML = `<p class="text-center text-xs text-slate-400 py-8">Mesajlar yüklənir...</p>`;
     openModal("chatModal");
+    markOrderMessagesRead(orderId, latestObservedMessageIds[String(orderId)] || 0);
 
     fetchChatMessages(true);
     if (chatPollTimer) clearInterval(chatPollTimer);
@@ -1871,19 +2123,22 @@ function closeChat() {
 
 async function fetchChatMessages(scrollToBottom = false) {
     if (!activeChatOrderId) return;
+    const orderId = activeChatOrderId;
     const box = document.getElementById("chatMessagesContainer");
 
     try {
-        const res = await fetch(`${BASE_URL}/api/orders/${activeChatOrderId}/messages`);
+        const res = await fetch(`${BASE_URL}/api/orders/${orderId}/messages`);
         if (!res.ok) {
             box.innerHTML = `<p class="text-center text-xs text-red-600 py-8">Çat serveri cavab vermir (Xəta ${res.status})</p>`;
             return;
         }
 
         const messages = await res.json();
+        if (!currentUser || String(activeChatOrderId) !== String(orderId) || !Array.isArray(messages)) return;
+        updateUnreadMessageState(orderId, messages, true);
         const isNearBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 100;
 
-        if (!Array.isArray(messages) || messages.length === 0) {
+        if (messages.length === 0) {
             box.innerHTML = `
                 <div class="text-center py-12 space-y-1">
                     <p class="text-xs font-bold text-slate-500">Hələ mesaj yoxdur</p>

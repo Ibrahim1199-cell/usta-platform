@@ -124,6 +124,19 @@ function escapeHtml(str) {
         .replace(/"/g, "&quot;");
 }
 
+async function getResponseErrorMessage(res, fallback) {
+    const responseText = await res.text();
+    if (!responseText.trim()) return fallback;
+
+    try {
+        const data = JSON.parse(responseText);
+        const message = typeof data === "string" ? data : data && (data.message || data.error || data.detail);
+        return typeof message === "string" && message.trim() ? message : fallback;
+    } catch (e) {
+        return responseText.trim();
+    }
+}
+
 function getStatusBadge(status) {
     const map = {
         GOZLEMEDE: { label: "Gözləmədə", cls: "bg-amber-50 text-amber-700 border-amber-200/80" },
@@ -1479,6 +1492,9 @@ async function loadProfileView() {
                             Müştəri rəyləri
                         </a>
                     ` : ""}
+                    <a href="#secChangePassword" class="block px-3.5 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50">
+                        Şifrəni dəyiş
+                    </a>
                 </div>
 
                 <div class="bg-[#EBF2EE] p-5 rounded-2xl border border-[#DCE4DF] space-y-2.5">
@@ -1592,6 +1608,34 @@ async function loadProfileView() {
                 ` : ""}
 
                 ${reviewsBlock}
+
+                <div id="secChangePassword" class="profile-section-card bg-white p-6 rounded-2xl border border-[#E6EAE7] space-y-5">
+                    <div>
+                        <h3 class="font-extrabold text-base text-slate-900">Şifrəni dəyiş</h3>
+                        <p class="text-xs text-slate-500 mt-1">Hesabınızın təhlükəsizliyi üçün yeni şifrə təyin edin.</p>
+                    </div>
+                    <form onsubmit="changePassword(event)" class="space-y-4">
+                        <div>
+                            <label for="changeCurrentPassword" class="block text-xs font-bold text-slate-700 mb-1.5">Cari şifrə</label>
+                            <input id="changeCurrentPassword" type="password" required autocomplete="current-password" class="input-field">
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="changeNewPassword" class="block text-xs font-bold text-slate-700 mb-1.5">Yeni şifrə</label>
+                                <input id="changeNewPassword" type="password" required autocomplete="new-password" class="input-field">
+                            </div>
+                            <div>
+                                <label for="changeConfirmPassword" class="block text-xs font-bold text-slate-700 mb-1.5">Yeni şifrənin təkrarı</label>
+                                <input id="changeConfirmPassword" type="password" required autocomplete="new-password" class="input-field">
+                            </div>
+                        </div>
+                        <div class="flex justify-end pt-2">
+                            <button type="submit" id="btnChangePassword" class="h-11 px-5 rounded-xl bg-[#1F563D] hover:bg-[#184430] text-white text-sm font-bold transition">
+                                Şifrəni yadda saxla
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     `;
@@ -1688,6 +1732,82 @@ async function saveProfileChanges(e) {
         loadProfileView();
     } else {
         showToast("Profil yenilənərkən backend xətası oldu.", "error");
+    }
+}
+
+async function changePassword(e) {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    const oldPassword = document.getElementById("changeCurrentPassword").value;
+    const newPassword = document.getElementById("changeNewPassword").value;
+    const confirmation = document.getElementById("changeConfirmPassword").value;
+    const btn = document.getElementById("btnChangePassword");
+
+    if (newPassword.length < 4) {
+        showToast("Yeni şifrə ən azı 4 simvoldan ibarət olmalıdır.", "error");
+        return;
+    }
+    if (newPassword !== confirmation) {
+        showToast("Yeni şifrələr uyğun gəlmir.", "error");
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerText = "Yadda saxlanılır...";
+
+    try {
+        const res = await fetch(`${BASE_URL}/api/users/${currentUser.id}/password`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ oldPassword, newPassword })
+        });
+
+        if (!res.ok) {
+            throw new Error(await getResponseErrorMessage(res, "Şifrə dəyişdirilmədi."));
+        }
+
+        form.reset();
+        showToast("Şifrəniz uğurla dəyişdirildi.", "success");
+    } catch (err) {
+        showToast(err.message || "Şifrə dəyişdirilərkən xəta baş verdi.", "error");
+    } finally {
+        btn.disabled = false;
+        btn.innerText = "Şifrəni yadda saxla";
+    }
+}
+
+async function resetPassword(e) {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    const phone = document.getElementById("resetPasswordPhone").value.trim();
+    const fullName = document.getElementById("resetPasswordFullName").value.trim();
+    const newPassword = document.getElementById("resetPasswordNew").value;
+    const btn = document.getElementById("btnResetPassword");
+
+    btn.disabled = true;
+    btn.innerText = "Yenilənir...";
+
+    try {
+        const res = await fetch(`${BASE_URL}/api/reset-password`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ phone, fullName, newPassword })
+        });
+
+        if (!res.ok) {
+            throw new Error(await getResponseErrorMessage(res, "Şifrə yenilənmədi."));
+        }
+
+        form.reset();
+        closeModal("resetPasswordModal");
+        showToast("Şifrəniz yeniləndi. İndi daxil ola bilərsiniz.", "success");
+    } catch (err) {
+        showToast(err.message || "Şifrə bərpa edilərkən xəta baş verdi.", "error");
+    } finally {
+        btn.disabled = false;
+        btn.innerText = "Şifrəni yenilə";
     }
 }
 

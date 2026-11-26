@@ -74,4 +74,6 @@ public class User {
 
     public String getPortfolioUrls() { return portfolioUrls; }
     public void setPortfolioUrls(String portfolioUrls) { this.portfolioUrls = portfolioUrls; }
+
+
 }

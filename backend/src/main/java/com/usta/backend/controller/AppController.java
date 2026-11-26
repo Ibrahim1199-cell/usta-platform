@@ -185,4 +185,52 @@ public class AppController {
         message.setOrderId(orderId);
         return messageRepository.save(message);
     }
+
+    // 16. Profildən şifrəni dəyişmək
+    @PutMapping("/users/{id}/password")
+    public ResponseEntity<?> changePassword(@PathVariable Long id, @RequestBody Map<String, String> req) {
+        String oldPassword = req.get("oldPassword");
+        String newPassword = req.get("newPassword");
+
+        if (newPassword == null || newPassword.trim().length() < 4) {
+            return ResponseEntity.badRequest().body("Yeni şifrə ən azı 4 simvol olmalıdır!");
+        }
+
+        Optional<User> userOpt = userRepository.findById(id);
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        User user = userOpt.get();
+        if (!user.getPassword().equals(oldPassword)) {
+            return ResponseEntity.badRequest().body("Cari şifrə yanlışdır!");
+        }
+
+        user.setPassword(newPassword.trim());
+        userRepository.save(user);
+        return ResponseEntity.ok(Map.of("message", "Şifrə uğurla yeniləndi!"));
+    }
+
+    // 17. Giriş ekranından şifrəni sıfırlamaq (Şifrəni unutdum)
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> req) {
+        String phone = req.get("phone");
+        String fullName = req.get("fullName");
+        String newPassword = req.get("newPassword");
+
+        if (phone == null || fullName == null || newPassword == null || newPassword.trim().length() < 4) {
+            return ResponseEntity.badRequest().body("Bütün xanaları düzgün doldurun (şifrə min. 4 simvol)!");
+        }
+
+        Optional<User> userOpt = userRepository.findByPhone(phone.trim());
+        if (userOpt.isEmpty() || userOpt.get().getFullName() == null ||
+                !userOpt.get().getFullName().trim().equalsIgnoreCase(fullName.trim())) {
+            return ResponseEntity.badRequest().body("Telefon nömrəsi və ya Ad/Soyad uyğun gəlmir!");
+        }
+
+        User user = userOpt.get();
+        user.setPassword(newPassword.trim());
+        userRepository.save(user);
+        return ResponseEntity.ok(Map.of("message", "Yeni şifrə təyin edildi! İndi daxil ola bilərsiniz."));
+    }
 }

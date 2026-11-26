@@ -240,8 +240,8 @@ async function playUnreadMessageSound() {
         if (audioCtx.state === "suspended") await audioCtx.resume();
         const now = audioCtx.currentTime;
         const notes = [
-            { frequency: 587, start: now },
-            { frequency: 880, start: now + 0.15 }
+            { frequency: 659, start: now },
+            { frequency: 880, start: now + 0.12 }
         ];
 
         notes.forEach(note => {

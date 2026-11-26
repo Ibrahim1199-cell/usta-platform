@@ -70,10 +70,20 @@ textarea:focus-visible {
     text-decoration: none;
 }
 
-.auth-header .rounded-lg,
-.dashboard-header a > div {
-    border-radius: 11px;
-    box-shadow: 0 7px 16px rgba(31, 86, 61, 0.16);
+.brand-mark {
+    display: block;
+    width: 40px;
+    height: 40px;
+    flex: none;
+    filter: drop-shadow(0 7px 10px rgba(33, 102, 79, 0.2));
+}
+
+.brand-wordmark {
+    color: var(--ink);
+    font-size: 1.35rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.055em;
 }
 
 .auth-layout {
